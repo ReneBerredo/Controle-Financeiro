@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minhas Receita</title>
+</head>
+<body>
+    <h1>Minhas Receitas</h1>
+
+    <ul>
+        {% for receita in receitas %}
+            <li>{{ receita.data }} - {{ recita.descricao }} - R$ {{ receita.valor }} - ({{ receita.tipo }})</li>
+        {% empty %}
+            <li>Nenhuma receita cadastrada ainda.</li>
+        {% endfor %}    
+    </ul>
+</body>
+</html>
