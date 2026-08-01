@@ -8,6 +8,11 @@
 <body>
     <h1>Minhas Receitas</h1>
 
+    <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit">Sair</button>
+    </form>
+
     <ul>
         {% for receita in receitas %}
             <li>{{ receita.data }} - {{ recita.descricao }} - R$ {{ receita.valor }} - ({{ receita.tipo }})</li>
