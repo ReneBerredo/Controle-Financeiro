@@ -2,11 +2,12 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minhas Receita</title>
+    <title>Minhas Receitas</title>
 </head>
 <body>
     <h1>Minhas Receitas</h1>
+
+    <p><a href="{% url 'criar_receita' %}">+ Nova Receita</a></p>
 
     <form method="post" action="{% url 'logout' %}">
         {% csrf_token %}
@@ -15,10 +16,10 @@
 
     <ul>
         {% for receita in receitas %}
-            <li>{{ receita.data }} - {{ recita.descricao }} - R$ {{ receita.valor }} - ({{ receita.tipo }})</li>
+            <li>{{ receita.data }} - {{ receita.descricao }} - R$ {{ receita.valor }} ({{ receita.tipo }})</li>
         {% empty %}
             <li>Nenhuma receita cadastrada ainda.</li>
-        {% endfor %}    
+        {% endfor %}
     </ul>
 </body>
 </html>

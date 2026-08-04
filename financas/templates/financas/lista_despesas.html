@@ -2,18 +2,24 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minhas Despesas</title>
 </head>
 <body>
     <h1>Minhas Despesas</h1>
 
+    <p><a href="{% url 'criar_despesa' %}">+ Nova Despesa</a></p>
+
+    <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit">Sair</button>
+    </form>
+
     <ul>
         {% for despesa in despesas %}
-            <li>{{ despesa.data }} - {{ despesa.descricao }} - R$ {{ despesa.valor }} - ({{ despesa.tipo }})</li>
+            <li>{{ despesa.data }} - {{ despesa.descricao }} - R$ {{ despesa.valor }} ({{ despesa.tipo }})</li>
         {% empty %}
             <li>Nenhuma despesa cadastrada ainda.</li>
-        {% endfor %}    
+        {% endfor %}
     </ul>
 </body>
 </html>
