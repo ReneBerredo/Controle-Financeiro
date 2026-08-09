@@ -16,7 +16,9 @@
 
     <ul>
         {% for despesa in despesas %}
-            <li>{{ despesa.data }} - {{ despesa.descricao }} - R$ {{ despesa.valor }} ({{ despesa.tipo }})</li>
+            <li>{{ despesa.data }} - {{ despesa.descricao }} - R$ {{ despesa.valor }} ({{ despesa.tipo }})
+                <a href="{% url 'editar_despesa' despesa.id %}">Editar</a>
+            </li>
         {% empty %}
             <li>Nenhuma despesa cadastrada ainda.</li>
         {% endfor %}

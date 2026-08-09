@@ -3,6 +3,7 @@ from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from .models import Receita, Despesa
 from .forms import ReceitaForm, DespesaForm
+from django.shortcuts import get_object_or_404
 
 @login_required
 def lista_receitas(request):
@@ -42,4 +43,31 @@ def criar_despesa(request):
 
     return render(request, 'financas/criar_despesa.html', {'form': form})
 
+@login_required
+def editar_receita(request, receita_id):
+    receita = get_object_or_404(Receita, id=receita_id, usuario=request.user)
+
+    if request.method == 'POST':
+        form = ReceitaForm(request.POST, instance=receita)
+        if form.is_valid():
+            form.save()
+            return redirect('lista_receitas')
+    else:
+        form = ReceitaForm(instance=receita)
+
+    return render(request, 'financas/editar_receita.html', {'form': form})
+
+@login_required
+def editar_despesa(request, despesa_id):
+    despesa = get_object_or_404(Despesa, id=despesa_id, usuario=request.user)
+
+    if request.method == 'POST':
+        form = DespesaForm(request.POST, instance=despesa)
+        if form.is_valid():
+            form.save()
+            return redirect('lista_despesas')
+    else:
+        form = DespesaForm(instance=despesa)
+
+    return render(request, 'financas/editar_despesa.html', {'form': form})
 

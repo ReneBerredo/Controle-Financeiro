@@ -16,7 +16,9 @@
 
     <ul>
         {% for receita in receitas %}
-            <li>{{ receita.data }} - {{ receita.descricao }} - R$ {{ receita.valor }} ({{ receita.tipo }})</li>
+            <li>{{ receita.data }} - {{ receita.descricao }} - R$ {{ receita.valor }} ({{ receita.tipo }})
+                <a href="{% url 'editar_receita' receita.id %}">Editar</a>
+            </li>
         {% empty %}
             <li>Nenhuma receita cadastrada ainda.</li>
         {% endfor %}
