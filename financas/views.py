@@ -71,3 +71,22 @@ def editar_despesa(request, despesa_id):
 
     return render(request, 'financas/editar_despesa.html', {'form': form})
 
+@login_required
+def excluir_receita(request, receita_id):
+    receita = get_object_or_404(Receita, id=receita_id, usuario=request.user)
+
+    if request.method == 'POST':
+        receita.delete()
+        return redirect('lista_receitas')
+
+    return render(request, 'financas/excluir_receita.html', {'receita': receita})
+
+@login_required
+def excluir_despesa(request, despesa_id):
+    despesa = get_object_or_404(Despesa, id=despesa_id, usuario=request.user)
+
+    if request.method == 'POST':
+        despesa.delete()
+        return redirect('lista_despesas')
+
+    return render(request, 'financas/excluir_despesa.html', {'despesa': despesa})

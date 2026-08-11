@@ -6,9 +6,11 @@ urlpatterns = [
     path('receitas/', views.lista_receitas, name='lista_receitas'),
     path('receitas/nova/', views.criar_receita, name='criar_receita'),
     path('receitas/<int:receita_id>/editar/', views.editar_receita, name='editar_receita'),
+    path('receitas/<int:receita_id>/excluir/', views.excluir_receita, name='excluir_receita'),
     path('despesas/', views.lista_despesas, name='lista_despesas'),
     path('despesas/nova/', views.criar_despesa, name='criar_despesa'),
     path('despesas/<int:despesa_id>/editar/', views.editar_despesa, name='editar_despesa'),
+    path('despesas/<int:despesa_id>/excluir/', views.excluir_despesa, name='excluir_despesa'),
     path('login/', auth_views.LoginView.as_view(template_name='financas/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
 ]

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excluir Receita</title>
+</head>
+<body>
+    <h1>Excluir Receita</h1>
+
+    <p>Tem certeza que deseja excluir essa receita?</p>
+    <p>{{ receita.data }} - {{ receita.descricao }} - R$ {{ recceita.valor }} ({{ receita.tipo }})</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Sim, excluir</button>
+    </form>
+
+    <p><a href="{% url 'lista_receitas' %}">Cancelar</a></p>
+</body>
+</html>

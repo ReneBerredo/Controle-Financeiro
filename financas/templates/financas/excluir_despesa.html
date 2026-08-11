@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excluir Despesa</title>
+</head>
+<body>
+    <h1>Excluir Despesa</h1>
+
+    <p>Tem certeza que deseja excluir essa despesa?</p>
+    <p>{{ despesa.data }} - {{ despesa.descricao }} - R$ {{ despesa.valor }} ({{ despesa.tipo }})</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Sim, excluir</button>
+    </form>
+
+    <p><a href="{% url 'lista_despesas' %}">Cancelar</a></p>
+</body>
+</html>
