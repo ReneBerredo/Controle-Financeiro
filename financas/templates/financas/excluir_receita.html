@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Excluir Receita</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block title %}Excluir Receita{% endblock %}
+
+{% block conteudo %}
     <h1>Excluir Receita</h1>
 
     <p>Tem certeza que deseja excluir essa receita?</p>
@@ -17,5 +14,4 @@
     </form>
 
     <p><a href="{% url 'lista_receitas' %}">Cancelar</a></p>
-</body>
-</html>
+{% endblock %}
