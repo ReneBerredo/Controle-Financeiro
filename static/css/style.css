@@ -1,0 +1,24 @@
+:root {
+    --cor-fundo: #ffffff;
+    --cor-texto: #1a1a1a;
+    --cor-primaria: #2563eb;
+    --cor-card: #f3f4f6;
+    --cor-borda: #d1d5db;
+}
+
+[data-tema="escuro"] {
+    --cor-fundo: #121212;
+    --cor-texto: #e5e5e5;
+    --cor-primaria: #60a5fa;
+    --cor-card: #1e1e1e;
+    --cor-borda: #333333;
+}
+
+body {
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    transition: backgroud-color 0.2s, color 0.2s;
+}

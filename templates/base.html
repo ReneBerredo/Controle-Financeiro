@@ -1,7 +1,7 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" data-tema="claro">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,6 +12,7 @@
     <nav>
         <a href="{% url 'lista_receitas' %}">Receitas</a>
         <a href="{% url 'lista_despesas' %}">Despesas</a>
+        <button id="botao-tema" type="button">Modo Escuro</button>
         <form method="post" action="{% url 'logout' %}" style="display: inline;">
             {% csrf_token %}
             <button type="submit">Sair</button>
@@ -22,5 +23,23 @@
         {% block conteudo %}
         {% endblock %}
     </main>
+
+    <script>
+    const botaoTema = document.getElementById('botao-tema');
+    const htmlElemento = document.documentElement;
+
+    const TemaSalvo = localStorage.getItem('tema');
+    if (TemaSalvo) {
+        htmlElemento.setAttribute('data-tema', TemaSalvo);
+    }
+
+    botaoTema.addEventListener('click', function () {
+        const temaAtual = htmlElemento.getAttribute('data-tema');
+        const novoTema = temaAtual ==='escuro' ? 'claro' : 'escuro';
+
+        htmlElemento.setAttribute('data-tema', novoTema);
+        localStorage.setItem('tema', novoTema);
+    })
+    </script>
 </body>
 </html>
