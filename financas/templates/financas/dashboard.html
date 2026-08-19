@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block conteudo %}
+    <h1>Minha Saúde Financeira</h1>
+
+    <div class="cards-resumo">
+        <div class="card-resumo">
+            <span>Receitas</span>
+            <strong class="valor-positivo">R$ {{ total_receitas|floatformat:2 }}</strong>
+        </div>
+        <div class="card-resumo">
+            <span>Despesas</span>
+            <strong class="valor-negativo">R$ {{ total_despesas|floatformat:2 }}</strong>
+        </div>
+        <div class="card-resumo">
+            <span>Saldo</span>
+            {% if saldo >= 0 %}
+                <strong class="valor-positivo">R$ {{ total_receitas|floatformat:2 }}</strong>
+            {% else %}
+                <strong class="valor-negativo">R$ {{ total_despesas|floatformat:2 }}</strong>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

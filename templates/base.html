@@ -10,9 +10,10 @@
 </head>
 <body>
     <nav>
+        <a href="{% url 'dashboard' %}">Dashboard</a>
         <a href="{% url 'lista_receitas' %}">Receitas</a>
         <a href="{% url 'lista_despesas' %}">Despesas</a>
-        <button id="botao-tema" type="button">Modo Escuro</button>
+        <button id="botao-tema" type="button">Tema</button>
         <form method="post" action="{% url 'logout' %}" style="display: inline;">
             {% csrf_token %}
             <button type="submit">Sair</button>

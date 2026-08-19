@@ -132,3 +132,38 @@ button[type="submit"] {
 button[type="submit"]:hover {
     opacity: 0.9;
 }
+
+.cards-resumo {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+}
+
+.card-resumo {
+    background-color: var(--cor-card);
+    border: 1px solid var(--cor-borda);
+    border-radius: 8px;
+    padding: 1.5rem;
+    flex: 1;
+    min-width: 200px;
+}
+
+.card-resumo span {
+    display: block;
+    color: var(--cor-texto);
+    opacity: 0.7;
+    margin-bottom: 0.5rem;
+}
+
+.card-resumo strong {
+    font-size: 1.8rem;
+}
+
+.valor-positivo {
+    color: #16a34a;
+}
+
+.valor-negativo {
+    color: #dc2626;
+}

@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
+from django.db.models import Sum
 from django.contrib.auth.decorators import login_required
 from .models import Receita, Despesa
 from .forms import ReceitaForm, DespesaForm
@@ -90,3 +91,20 @@ def excluir_despesa(request, despesa_id):
         return redirect('lista_despesas')
 
     return render(request, 'financas/excluir_despesa.html', {'despesa': despesa})
+
+@login_required
+def dashboard(request):
+    receitas = Receita.objects.filter(usuario=request.user)
+    despesas = Despesa.objects.filter(usuario=request.user)
+
+    total_receitas = receitas.aggregate(Sum('valor'))['valor__sum'] or 0
+    total_despesas = despesas.aggregate(Sum('valor'))['valor__sum'] or 0
+    saldo = total_receitas - total_despesas
+
+    contexto = {
+        'total_receitas': total_receitas,
+        'total_despesas': total_despesas,
+        'saldo': saldo,
+    }
+
+    return render(request, 'financas/dashboard.html', contexto)
