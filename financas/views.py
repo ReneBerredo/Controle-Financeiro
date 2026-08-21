@@ -101,10 +101,15 @@ def dashboard(request):
     total_despesas = despesas.aggregate(Sum('valor'))['valor__sum'] or 0
     saldo = total_receitas - total_despesas
 
+    receitas_por_tipo = receitas.values('tipo__nome').annotate(total=Sum('valor')).order_by('-total')
+    despesas_por_tipo = despesas.values('tipo__nome').annotate(total=Sum('valor')).order_by('-total')
+
     contexto = {
         'total_receitas': total_receitas,
         'total_despesas': total_despesas,
         'saldo': saldo,
+        'receitas_por_tipo': receitas_por_tipo,
+        'despesas_por_tipo': despesas_por_tipo,
     }
 
     return render(request, 'financas/dashboard.html', contexto)

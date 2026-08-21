@@ -17,10 +17,48 @@
         <div class="card-resumo">
             <span>Saldo</span>
             {% if saldo >= 0 %}
-                <strong class="valor-positivo">R$ {{ total_receitas|floatformat:2 }}</strong>
+                <strong class="valor-positivo">R$ {{ saldo|floatformat:2 }}</strong>
             {% else %}
-                <strong class="valor-negativo">R$ {{ total_despesas|floatformat:2 }}</strong>
+                <strong class="valor-negativo">R$ {{ saldo|floatformat:2 }}</strong>
             {% endif %}
+        </div>
+    </div>
+
+    <div class="secao-categorias">
+        <div class="bloco-categoria">
+            <h2>Despesas por Categoria</h2>
+            {% for item in despesas_por_tipo %}
+                <div class="linha-categoria">
+                    <div class="linha-categoria-topo">
+                        <span>{{ item.tipo__nome }}</span>
+                        <span>R$ {{ item.total|floatformat:2 }}</span>
+                    </div>
+                    <div class="barra-fundo">
+                        <div class="barra-preenchida barra-despesa" style="width: {% widthratio item.total total_despesas 100 %}%;"></div>
+                    </div>
+                </div>
+            {% empty %}
+                <p>Nenhuma despesa cadastrada ainda.</p>
+            {% endfor %}
+        </div>
+    
+
+            <div class="bloco-categoria">
+                <h2>Receitas por Categoria</h2>
+                {% for item in receitas_por_tipo %}
+                    <div class="linha-categoria">
+                        <div class="linha-categoria-topo">
+                            <span>{{ item.tipo__nome }}</span>
+                            <span>R$ {{ item.total|floatformat:2 }}</span>
+                        </div>
+                        <div class="barra-fundo">
+                            <div class="barra-preenchida barra-receita" style="width: {% widthratio item.total total_receitas 100 %}%;"></div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p>Nenhuma receita cadastrada ainda.</p>
+                {% endfor %}
+            </div>
         </div>
     </div>
 {% endblock %}
