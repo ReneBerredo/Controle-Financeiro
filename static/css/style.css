@@ -168,7 +168,7 @@ button[type="submit"]:hover {
     color: #dc2626;
 }
 
-.secao-categoria {
+.secao-categorias {
     display: flex;
     gap: 1.5rem;
     flex-wrap: wrap;
