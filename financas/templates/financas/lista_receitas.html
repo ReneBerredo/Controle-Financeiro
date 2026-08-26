@@ -9,7 +9,7 @@
 
     <ul>
         {% for receita in receitas %}
-            <li>{{ receita.data }} - {{ receita.descricao }} - R$ {{ receita.valor }} ({{ receita.tipo }})
+            <li>{{ receita.data|date:"d/m/Y" }} - {{ receita.descricao }} - R$ {{ receita.valor }} ({{ receita.tipo }})
                 <a href="{% url 'editar_receita' receita.id %}">Editar</a>
                 <a href="{% url 'excluir_receita' receita.id %}">Excluir</a>
             </li>

@@ -9,7 +9,7 @@
 
     <ul>
         {% for despesa in despesas %}
-            <li>{{ despesa.data }} - {{ despesa.descricao }} - R$ {{ despesa.valor }} ({{ despesa.tipo }})
+            <li>{{ despesa.data|date:"d/m/Y" }} - {{ despesa.descricao }} - R$ {{ despesa.valor }} ({{ despesa.tipo }})
                 <a href="{% url 'editar_despesa' despesa.id %}">Editar</a>
                 <a href="{% url 'excluir_despesa' despesa.id %}">Excluir</a>
             </li>
