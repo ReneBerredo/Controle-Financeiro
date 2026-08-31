@@ -5,6 +5,8 @@ from django.contrib.auth.decorators import login_required
 from .models import Receita, Despesa
 from .forms import ReceitaForm, DespesaForm
 from django.shortcuts import get_object_or_404
+import uuid
+from dateutil.relativedelta import relativedelta
 
 @login_required
 def lista_receitas(request):
@@ -35,9 +37,32 @@ def criar_despesa(request):
     if request.method == 'POST':
         form = DespesaForm(request.POST)
         if form.is_valid():
-            despesa = form.save(commit=False)
-            despesa.usuario = request.user
-            despesa.save()
+            parcelado = form.cleaned_data['parcelado']
+            total_parcelas = form.cleaned_data['total_parcelas']
+
+            if parcelado and total_parcelas:
+                grupo = uuid.uuid4()
+                data_primeira_parcela = form.cleaned_data['data']
+
+                for numero in range(1, total_parcelas + 1 ):
+                    data_parcela = data_primeira_parcela + relativedelta(months=numero - 1)
+
+                    Despesa.objects.create(
+                        usuario=request.user,
+                        tipo=form.cleaned_data['tipo'],
+                        valor=form.cleaned_data['valor'],
+                        descricao=form.cleaned_data['descricao'],
+                        data=data_parcela,
+                        parcelado=True,
+                        parcela_atual=numero,
+                        total_parcelas=total_parcelas,
+                        grupo_parcelamento=grupo,
+                    )
+            else:
+                despesa = form.save(commit=False)
+                despesa.usuario = request.user
+                despesa.save()
+
             return redirect('lista_despesas')
     else:
         form = DespesaForm()
