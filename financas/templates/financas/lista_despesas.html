@@ -10,6 +10,9 @@
     <ul>
         {% for despesa in despesas %}
             <li>{{ despesa.data|date:"d/m/Y" }} - {{ despesa.descricao }} - R$ {{ despesa.valor }} ({{ despesa.tipo }})
+                {% if despesa.parcelado %}
+                <span class="badge-parcela">Parcela {{ despesa.parcela_atual}}/{{ despesa.total_parcelas }}</span>
+            {% endif %}
                 <a href="{% url 'editar_despesa' despesa.id %}">Editar</a>
                 <a href="{% url 'excluir_despesa' despesa.id %}">Excluir</a>
             </li>
