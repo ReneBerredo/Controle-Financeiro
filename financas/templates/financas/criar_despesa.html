@@ -12,4 +12,11 @@
     </form>
 
     <p><a href="{% url 'lista_despesas' %}">Voltar para a lista</a></p>
+
+    <script>
+        document.querySelector('form').addEventListener('submit', function () {
+            const botao = this.querySelector('button[type="submit"]');
+            botao.textContent = 'Salvando...';
+        });
+    </script>
 {% endblock %}
