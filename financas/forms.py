@@ -19,4 +19,14 @@ class DespesaForm(forms.ModelForm):
         widgets = {
                     'data': forms.DateInput(attrs={'type': 'date'}, format='%Y-%m-%d')
                 }
-       
+        
+    def clean(self):
+        cleaned_data = super().clean()
+        parcelado = cleaned_data.get('parcelado')
+        total_parcelas = cleaned_data.get('total_parcelas')
+
+        if parcelado and not total_parcelas:
+            raise forms.ValidationError('Informa a quantidade de parcelas para uma despesa parcelada.')
+
+        return cleaned_data
+    
