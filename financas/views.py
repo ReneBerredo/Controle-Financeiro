@@ -122,6 +122,17 @@ def dashboard(request):
     receitas = Receita.objects.filter(usuario=request.user)
     despesas = Despesa.objects.filter(usuario=request.user)
 
+    data_inicial = request.GET.get('data_inicial')
+    data_final = request.GET.get('data_final')
+
+    if data_inicial:
+        receitas = receitas.filter(data__gte=data_inicial)
+        despesas = despesas.filter(data__gte=data_inicial)
+
+    if data_final:
+        receitas = receitas.filter(data__lte=data_final)
+        despesas = despesas.filter(data__lte=data_final)
+
     total_receitas = receitas.aggregate(Sum('valor'))['valor__sum'] or 0
     total_despesas = despesas.aggregate(Sum('valor'))['valor__sum'] or 0
     saldo = total_receitas - total_despesas

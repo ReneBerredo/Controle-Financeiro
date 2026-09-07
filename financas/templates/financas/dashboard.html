@@ -5,6 +5,20 @@
 {% block conteudo %}
     <h1>Minha Saúde Financeira</h1>
 
+    <form method="get" class="form-filtro">
+        <div>
+            <label for="data_inicial">De:</label>
+            <input type="date" id="data_inicial" name="data_inicial" value="{{data_inicial|default:'' }}">
+        </div>
+        <div>
+            <label for="data_final">Até:</label>
+            <input type="date" id="data_final" name="data_final" value="{{data_final|default:'' }}">
+        </div>
+        <button type="submit">Filtrar</button>
+    </form>
+
+    <p><a href="{% url 'dashboard' %}">Limpar filtro</a></p>
+
     <div class="cards-resumo">
         <div class="card-resumo">
             <span>Receitas</span>
