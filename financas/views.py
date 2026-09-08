@@ -149,3 +149,17 @@ def dashboard(request):
     }
 
     return render(request, 'financas/dashboard.html', contexto)
+
+@login_required
+def alternar_pago_receita(request, receita_id):
+    receita = get_object_or_404(Receita, id=receita_id, usuario=request.user)
+    receita.pago = not receita.pago
+    receita.save()
+    return redirect('lista_receitas')
+
+@login_required
+def alternar_pago_despesa(request, despesa_id):
+    despesa = get_object_or_404(Despesa, id=despesa_id, usuario=request.user)
+    despesa.pago = not despesa.pago
+    despesa.save()
+    return redirect('lista_despesas')

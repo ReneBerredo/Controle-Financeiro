@@ -14,4 +14,6 @@ urlpatterns = [
     path('despesas/<int:despesa_id>/excluir/', views.excluir_despesa, name='excluir_despesa'),
     path('login/', auth_views.LoginView.as_view(template_name='financas/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('receitas/<int:receita_id>/alternar-pago/', views.alternar_pago_receita, name='alternar_pago_receita'),
+    path('despesas/<int:despesa_id>/alternar-pago/', views.alternar_pago_despesa, name='alternar_pago_despesa'),
 ]

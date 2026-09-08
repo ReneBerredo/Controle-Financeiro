@@ -10,6 +10,20 @@
     <ul>
         {% for despesa in despesas %}
             <li>{{ despesa.data|date:"d/m/Y" }} - {{ despesa.descricao }} - R$ {{ despesa.valor }} ({{ despesa.tipo }})
+
+                {% if despesa.pago %}
+                    <span class="status-pago">✅ Pago</span>
+                {% else %}
+                    <span class="status-pendente">⏳ Aguardando</span>
+                {% endif %}
+
+                <form method="post" action="{% url 'alternar_pago_despesa' despesa.id %}" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit">
+                        {% if despesa.pago %}Não pago{% else %}Pago{% endif %}
+                    </button>
+                </form>
+                
                 {% if despesa.parcelado %}
                 <span class="badge-parcela">Parcela {{ despesa.parcela_atual}}/{{ despesa.total_parcelas }}</span>
             {% endif %}
