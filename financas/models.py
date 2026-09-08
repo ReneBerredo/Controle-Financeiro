@@ -23,6 +23,7 @@ class Receita(models.Model):
     valor = models.DecimalField(max_digits=10, decimal_places=2)
     descricao = models.CharField(max_length=255, blank=True)
     data = models.DateField()
+    pago = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.descricao} - R$ {self.valor}'
@@ -33,6 +34,7 @@ class Despesa(models.Model):
     valor = models.DecimalField(max_digits=10, decimal_places=2)
     descricao = models.CharField(max_length=255, blank=True)
     data = models.DateField()
+    pago = models.BooleanField(default=False)
     parcelado = models.BooleanField(default=False)
     parcela_atual = models.PositiveIntegerField(null=True, blank=True)
     total_parcelas = models.PositiveIntegerField(null=True, blank=True)
