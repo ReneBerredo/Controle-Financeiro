@@ -1,17 +1,23 @@
 :root {
-    --cor-fundo: #ffffff;
-    --cor-texto: #1a1a1a;
-    --cor-primaria: #2563eb;
-    --cor-card: #f3f4f6;
-    --cor-borda: #d1d5db;
+    --cor-fundo: #f8f9fc;
+    --cor-texto: #1e1b2e;
+    --cor-primaria: #6366f1;
+    --cor-primaria-hover: #4f46e5;
+    --cor-card: #ffffff;
+    --cor-borda: #e2e4f0;
+    --cor-sucesso: #10b981;
+    --cor-perigo: #ef4444;
 }
 
 [data-tema="escuro"] {
-    --cor-fundo: #121212;
-    --cor-texto: #e5e5e5;
-    --cor-primaria: #60a5fa;
-    --cor-card: #1e1e1e;
-    --cor-borda: #333333;
+    --cor-fundo: #13111c;
+    --cor-texto: #e9e7f5;
+    --cor-primaria: #818cf8;
+    --cor-primaria-hover: #a5b4fc;
+    --cor-card: #1e1b2e;
+    --cor-borda: #2e2a45;
+    --cor-sucesso: #34d399;
+    --cor-perigo: #f87171;
 }
 
 body {
@@ -161,11 +167,11 @@ button[type="submit"]:hover {
 }
 
 .valor-positivo {
-    color: #16a34a;
+    color: var(--cor-sucesso);
 }
 
 .valor-negativo {
-    color: #dc2626;
+    color: var(--cor-perigo);
 }
 
 .secao-categorias {
@@ -212,10 +218,10 @@ button[type="submit"]:hover {
 }
 
 .barra-despesa {
-    background-color: #dc2626;
+    background-color: var(--cor-perigo);
 }
 
 .barra-receita {
-    background-color: #16a34a;
+    background-color: var(--cor-sucesso);
 }
 
