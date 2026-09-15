@@ -38,6 +38,25 @@
         </div>
     </div>
 
+    <div class="cards-status">
+        <div class="card-status">
+            <span>Recebido</span>
+            <strong class="valor-positivo">R$ {{ receitas_recebidas|floatformat:2 }}</strong>
+        </div>
+        <div class="card-status">
+            <span>A Receber</span>
+            <strong>R$ {{ receitas_a_receber|floatformat:2 }}</strong>
+        </div>
+        <div class="card-status">
+            <span>Pago</span>
+            <strong class="valor-negativo">R$ {{ despesas_pagas|floatformat:2 }}</strong>
+        </div>
+        <div class="card-status">
+            <span>A Pagar</span>
+            <strong>R$ {{ despesas_a_pagar|floatformat:2 }}</strong>
+        </div>
+    </div>
+
     <div class="secao-categorias">
         <div class="bloco-categoria">
             <h2>Receitas por Categoria</h2>

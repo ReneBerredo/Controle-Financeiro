@@ -137,6 +137,12 @@ def dashboard(request):
     total_despesas = despesas.aggregate(Sum('valor'))['valor__sum'] or 0
     saldo = total_receitas - total_despesas
 
+    receitas_recebidas = receitas.filter(pago=True).aggregate(Sum('valor'))['valor__sum'] or 0
+    receitas_a_receber = despesas.filter(pago=False).aggregate(Sum('valor'))['valor__sum'] or 0
+
+    despesas_pagas = despesas.filter(pago=True).aggregate(Sum('valor'))['valor__sum'] or 0
+    despesas_a_pagar = despesas.filter(pago=False).aggregate(Sum('valor'))['valor__sum'] or 0
+
     receitas_por_tipo = receitas.values('tipo__nome').annotate(total=Sum('valor')).order_by('-total')
     despesas_por_tipo = despesas.values('tipo__nome').annotate(total=Sum('valor')).order_by('-total')
 
@@ -146,6 +152,12 @@ def dashboard(request):
         'saldo': saldo,
         'receitas_por_tipo': receitas_por_tipo,
         'despesas_por_tipo': despesas_por_tipo,
+        'data_inicial': data_inicial,
+        'data_final': data_final,
+        'receitas_recebidas': receitas_recebidas,
+        'receitas_a_receber': receitas_a_receber,
+        'despesas_pagas': despesas_pagas,
+        'despesas_a_pagar': despesas_a_pagar,
     }
 
     return render(request, 'financas/dashboard.html', contexto)
