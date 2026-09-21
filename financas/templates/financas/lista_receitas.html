@@ -8,28 +8,37 @@
     <p><a href="{% url 'criar_receita' %}">+ Nova Receita</a></p>
 
     <ul>
-        {% for receita in receitas %}
-            <li>
-                {{ receita.data|date:"d/m/Y" }} - {{ receita.descricao }} - R$ {{ receita.valor }} ({{ receita.tipo }})
-
-                {% if receita.pago %}
-                    <span class="status-pago">✅ Recebido</span>
-                {% else %}
-                    <span class="status-pendente">⏳ A receber</span>
-                {% endif %}
-
-                <form method="post" action="{% url 'alternar_pago_receita' receita.id %}" style="display: inline;">
+    {% for receita in receitas %}
+        <li>
+            <div class="item-info">
+                <div class="item-principal">
+                    <span class="item-descricao">{{ receita.descricao }}</span>
+                    <span class="item-valor valor-positivo">R$ {{ receita.valor|floatformat:2 }}</span>
+                </div>
+                <div class="item-detalhes">
+                    <span>{{ receita.data|date:"d/m/Y" }}</span>
+                    <span>•</span>
+                    <span>{{ receita.tipo }}</span>
+                    {% if receita.pago %}
+                        <span class="status-pago">✅ Recebido</span>
+                    {% else %}
+                        <span class="status-pendente">⏳ A receber</span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="item-acoes">
+                <form method="post" action="{% url 'alternar_pago_receita' receita.id %}">
                     {% csrf_token %}
-                    <button type="submit">
-                        {% if receita.pago %}Não recebido{% else %}Recebido{% endif %}
+                    <button type="submit" class="btn-secundario">
+                        {% if receita.pago %}Desfazer{% else %}Marcar recebido{% endif %}
                     </button>
                 </form>
-
                 <a href="{% url 'editar_receita' receita.id %}">Editar</a>
                 <a href="{% url 'excluir_receita' receita.id %}">Excluir</a>
-            </li>
-        {% empty %}
-            <li>Nenhuma receita cadastrada ainda.</li>
-        {% endfor %}
-    </ul>
+            </div>
+        </li>
+    {% empty %}
+        <li>Nenhuma receita cadastrada ainda.</li>
+    {% endfor %}
+</ul>
 {% endblock %}

@@ -85,14 +85,98 @@ ul {
 ul li {
     background-color: var(--cor-card);
     border: 1px solid var(--cor-borda);
-    border-radius: 8px;
-    padding: 1rem;
+    border-radius: 10px;
+    padding: 1.2rem 1.5rem;
     margin-bottom: 0.75rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
+    gap: 1rem;
+    transition: box-shadow 0.2s;
+}
+
+ul li:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.item-info {
+    flex: 1;
+    min-width: 200px;
+}
+
+.item-principal {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    margin-bottom: 0.35rem;
+}
+
+.item-descricao {
+    font-weight: 600;
+    font-size: 1.05rem;
+}
+
+.item-valor {
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.item-detalhes {
+    display: flex;
+    align-items: center;
     gap: 0.5rem;
+    font-size: 0.85rem;
+    opacity: 0.75;
+}
+
+.status-pago {
+    color: var(--cor-sucesso);
+    font-weight: 600;
+}
+
+.status-pendente {
+    color: var(--cor-primaria);
+    font-weight: 600;
+}
+
+.badge-parcela {
+    background-color: var(--cor-primaria);
+    color: white;
+    padding: 0.15rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.item-acoes {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.item-acoes form {
+    background: none;
+    border: none;
+    padding: 0;
+    max-width: none;
+}
+
+.btn-secundario {
+    padding: 0.4rem 0.9rem;
+    background-color: transparent;
+    color: var(--cor-primaria);
+    border: 1px solid var(--cor-primaria);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.btn-secundario:hover {
+    background-color: var(--cor-primaria);
+    color: white;
 }
 
 form {
