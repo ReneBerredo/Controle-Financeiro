@@ -10,19 +10,28 @@
         <p>Veja como estão suas finanças</p>
     </div>
 
-    <form method="get" class="form-filtro">
-        <div>
-            <label for="data_inicial">De:</label>
-            <input type="date" id="data_inicial" name="data_inicial" value="{{data_inicial|default:'' }}">
-        </div>
-        <div>
-            <label for="data_final">Até:</label>
-            <input type="date" id="data_final" name="data_final" value="{{data_final|default:'' }}">
-        </div>
-        <button type="submit">Filtrar</button>
-    </form>
+    <div class="filtro-container">
+        <form method="get" class="form-filtro">
+            <div>
+                <label for="data_inicial">De:</label>
+                <input type="date" id="data_inicial" name="data_inicial" value="{{ data_inicial|default:'' }}">
+            </div>
+            <div>
+                <label for="data_final">Até:</label>
+                <input type="date" id="data_final" name="data_final" value="{{ data_final|default:'' }}">
+            </div>
+            <button type="submit">Filtrar</button>
+            <a href="{% url 'dashboard' %}" class="link-limpar">Limpar filtro</a>
+        </form>
 
-    <p><a href="{% url 'dashboard' %}">Limpar filtro</a></p>
+        <div class="atalhos-periodo">
+            <button type="button" class="atalho" data-periodo="hoje">Hoje</button>
+            <button type="button" class="atalho" data-periodo="este-mes">Este mês</button>
+            <button type="button" class="atalho" data-periodo="mes-anterior">Mês anterior</button>
+            <button type="button" class="atalho" data-periodo="ultimos-3-meses">Últimos 3 meses</button>
+            <button type="button" class="atalho" data-periodo="este-ano">Este ano</button>
+        </div>
+    </div>
 
     <div class="cards-resumo">
         <div class="card-resumo">
@@ -97,4 +106,51 @@
             {% endfor %}
         </div>  
     </div>
+
+    <script>
+        document.querySelectorAll('.atalho').forEach(function (botao) {
+            botao.addEventListener('click', function () {
+                const hoje = new Date();
+                let dataInicial, dataFinal;
+
+                switch (botao.dataset.periodo) {
+                    case 'hoje':
+                        dataInicial = hoje;
+                        dataFinal = hoje;
+                        break;
+
+                    case 'este-mes':
+                        dataInicial = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
+                        dataFinal = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0);
+                        break;
+
+                    case 'mes-anterior':
+                        dataInicial = new Date(hoje.getFullYear(), hoje.getMonth() - 1, 1);
+                        dataFinal = new Date(hoje.getFullYear(), hoje.getMonth(), 0);
+                        break;
+
+                    case 'ultimos-3-meses':
+                        dataInicial = new Date(hoje.getFullYear(), hoje.getMonth() - 2, 1);
+                        dataFinal = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0);
+                        break;
+
+                    case 'este-ano':
+                        dataInicial = new Date(hoje.getFullYear(), 0, 1);
+                        dataFinal = new Date(hoje.getFullYear(), 11, 31);
+                        break;
+                }
+
+                function formatarData(data) {
+                    const ano = data.getFullYear();
+                    const mes = String(data.getMonth() + 1).padStart(2, '0');
+                    const dia = String(data.getDate()).padStart(2, '0');
+                    return `${ano}-${mes}-${dia}`;
+                }
+
+                document.getElementById('data_inicial').value = formatarData(dataInicial);
+                document.getElementById('data_final').value = formatarData(dataFinal);
+                botao.closest('form').submit();
+            });
+        });
+    </script>
 {% endblock %}
