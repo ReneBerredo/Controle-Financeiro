@@ -5,6 +5,11 @@
 {% block conteudo %}
     <h1>Minha Saúde Financeira</h1>
 
+    <div class="saudacao">
+        <p>Olá {{ request.user.username }}! 👋</p>
+        <p>Veja como estão suas finanças</p>
+    </div>
+
     <form method="get" class="form-filtro">
         <div>
             <label for="data_inicial">De:</label>

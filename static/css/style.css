@@ -422,3 +422,35 @@ button[type="submit"]:disabled {
     background-color: var(--cor-sucesso);
 }
 
+.saudacao {
+    margin-bottom: 1.5rem;
+}
+
+.saudacao p:first-child {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin: 0 0 0.2rem 0;
+}
+
+.saudacao p:last-child {
+    color: var(--cor-texto);
+    opacity: 0.7;
+    margin: 0;
+    font-size: 0.95rem;
+}
+.saudacao {
+    margin-bottom: 1.5rem;
+}
+
+.saudacao p:first-child {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin: 0 0 0.2rem 0;
+}
+
+.saudacao p:last-child {
+    color: var(--cor-texto);
+    opacity: 0.7;
+    margin: 0;
+    font-size: 0.95rem;
+}
