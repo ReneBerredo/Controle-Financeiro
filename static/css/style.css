@@ -38,10 +38,18 @@ nav {
     border-bottom: 1px solid var(--cor-borda);
 }
 
-vav a {
+nav a {
     color: var(--cor-texto);
     text-decoration: none;
     font-weight: bold;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    transition: background-color 0.2s;
+}
+
+nav a.nav-ativo {
+    background-color: var(--cor-primaria);
+    color: white !important;
 }
 
 nav a:hover {
