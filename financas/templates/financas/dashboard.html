@@ -11,7 +11,7 @@
     </div>
 
     <div class="filtro-container">
-        <form method="get" class="form-filtro">
+        <form method="get" class="form-filtro" id="form-filtro-periodo">
             <div>
                 <label for="data_inicial">De:</label>
                 <input type="date" id="data_inicial" name="data_inicial" value="{{ data_inicial|default:'' }}">
@@ -149,7 +149,7 @@
 
                 document.getElementById('data_inicial').value = formatarData(dataInicial);
                 document.getElementById('data_final').value = formatarData(dataFinal);
-                botao.closest('form').submit();
+                document.getElementById('form-filtro-periodo').submit();
             });
         });
     </script>

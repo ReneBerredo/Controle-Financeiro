@@ -454,3 +454,51 @@ button[type="submit"]:disabled {
     margin: 0;
     font-size: 0.95rem;
 }
+
+.filtro-container {
+    background-color: var(--cor-card);
+    border: 1px solid var(--cor-borda);
+    border-radius: 10px;
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.form-filtro {
+    display: flex;
+    align-items: flex-end;
+    gap: 1rem;
+    flex-wrap: wrap;
+    background: none;
+    border: none;
+    padding: 0;
+    margin-bottom: 0.8rem;
+    max-width: none;
+}
+
+.link-limpar {
+    font-size: 0.85rem;
+    align-self: center;
+}
+
+.atalhos-periodo {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.atalho {
+    padding: 0.35rem 0.8rem;
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+    border: 1px solid var(--cor-borda);
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.2s;
+}
+
+.atalho:hover {
+    background-color: var(--cor-primaria);
+    color: white;
+    border-color: var(--cor-primaria);
+}
