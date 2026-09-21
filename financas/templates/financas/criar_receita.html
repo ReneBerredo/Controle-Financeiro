@@ -8,7 +8,33 @@
 
      <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+
+        <p>
+            {{ form.tipo.label_tag }}
+            {{ form.tipo }}
+            <a href="{% url 'criar_tipo_receita' %}">+ Novo Tipo</a>
+        </p>
+
+        <p>
+            {{ form.valor.label_tag }}
+            {{ form.valor }}
+        </p>
+
+        <p>
+            {{ form.descricao.label_tag }}
+            {{ form.descricao }}
+        </p>
+
+        <p>
+            {{ form.data.label_tag }}
+            {{ form.data }}
+        </p>
+
+        <p>
+            {{ form.pago.label_tag }}
+            {{ form.pago }}
+        </p>
+        
         <button type="submit">Salvar</button>
     </form>
 

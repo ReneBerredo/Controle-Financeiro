@@ -3,7 +3,7 @@ from django.shortcuts import redirect
 from django.db.models import Sum
 from django.contrib.auth.decorators import login_required
 from .models import Receita, Despesa
-from .forms import ReceitaForm, DespesaForm
+from .forms import ReceitaForm, DespesaForm, TipoReceitaForm, TipoDespesaForm
 from django.shortcuts import get_object_or_404
 import uuid
 from dateutil.relativedelta import relativedelta
@@ -175,3 +175,31 @@ def alternar_pago_despesa(request, despesa_id):
     despesa.pago = not despesa.pago
     despesa.save()
     return redirect('lista_despesas')
+
+@login_required
+def criar_tipo_receita(request):
+    if request.method == 'POST':
+        form = TipoReceitaForm(request.POST)
+        if form.is_valid():
+            tipo = form.save(commit=False)
+            tipo.usuario = request.user
+            tipo.save()
+            return redirect('criar_receita')
+    else:
+        form = TipoReceitaForm()
+
+    return render(request, 'financas/criar_tipo_receita.html', {'form': form})
+
+@login_required
+def criar_tipo_despesa(request):
+    if request.method == 'POST':
+        form = TipoDespesaForm(request.POST)
+        if form.is_valid():
+            tipo = form.save(commit=False)
+            tipo.usuario = request.user
+            tipo.save()
+            return redirect('criar_despesa')
+    else:
+        form = TipoDespesaForm()
+
+    return render(request, 'financas/criar_tipo_despesa.html', {'form': form})

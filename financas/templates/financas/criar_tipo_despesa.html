@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Novo Tipo de Despesa{% endblock %}
+
+{% block conteudo %}
+    <h1>Novo Tipo de Despesa</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Salvar</button>
+    </form>
+
+    <p><a href="{% url 'criar_despesa' %}">Voltar</a></p>
+{% endblock %}

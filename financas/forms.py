@@ -1,5 +1,5 @@
 from django import forms
-from .models import Receita, Despesa
+from .models import Receita, Despesa, TipoReceita, TipoDespesa
 
 class ReceitaForm(forms.ModelForm):
     class Meta:
@@ -29,4 +29,14 @@ class DespesaForm(forms.ModelForm):
             raise forms.ValidationError('Informa a quantidade de parcelas para uma despesa parcelada.')
 
         return cleaned_data
-    
+
+class TipoReceitaForm(forms.ModelForm):
+    class Meta:
+        model = TipoReceita
+        fields = ['nome']
+
+class TipoDespesaForm(forms.ModelForm):
+    class Meta:
+        model = TipoDespesa
+        fields = ['nome']
+        
