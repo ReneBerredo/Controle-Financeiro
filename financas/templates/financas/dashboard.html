@@ -34,21 +34,35 @@
     </div>
 
     <div class="cards-resumo">
-        <div class="card-resumo">
-            <span>Receitas</span>
+        <div class="card-resumo card-receitas">
+            <div class="card-resumo-topo">
+                <span class="card-icone">💰</span>
+                <span class="card-titulo">Receitas</span>
+            </div>
             <strong class="valor-positivo">R$ {{ total_receitas|floatformat:2 }}</strong>
+            <p class="card-legenda">Total de receitas no período</p>
         </div>
-        <div class="card-resumo">
-            <span>Despesas</span>
+
+        <div class="card-resumo card-despesas">
+            <div class="card-resumo-topo">
+                <span class="card-icone">💸</span>
+                <span class="card-titulo">Despesas</span>
+            </div>
             <strong class="valor-negativo">R$ {{ total_despesas|floatformat:2 }}</strong>
+            <p class="card-legenda">Total de despesas no período</p>
         </div>
-        <div class="card-resumo">
-            <span>Saldo</span>
+
+        <div class="card-resumo card-saldo">
+            <div class="card-resumo-topo">
+                <span class="card-icone">📊</span>
+                <span class="card-titulo">Saldo</span>
+            </div>
             {% if saldo >= 0 %}
                 <strong class="valor-positivo">R$ {{ saldo|floatformat:2 }}</strong>
             {% else %}
                 <strong class="valor-negativo">R$ {{ saldo|floatformat:2 }}</strong>
             {% endif %}
+            <p class="card-legenda">Resultado do período</p>
         </div>
     </div>
 
