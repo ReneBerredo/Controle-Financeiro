@@ -148,6 +148,25 @@ ul li:hover {
     font-weight: 600;
 }
 
+.status-icone {
+    font-size: 1.1rem;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--cor-fundo);
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.status-label {
+    display: block;
+    font-size: 0.75rem;
+    opacity: 0.65;
+    margin-bottom: 0.15rem;
+}
+
 .badge-parcela {
     background-color: var(--cor-primaria);
     color: white;
@@ -388,11 +407,13 @@ button[type="submit"]:disabled {
 .card-status {
     background-color: var(--cor-card);
     border: 1px solid var(--cor-borda);
-    border-radius: 8px;
-    padding: 0.9rem 1.2rem;
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
     flex: 1;
     min-height: 150px;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
 }
 
 .card-satus span {
@@ -403,7 +424,7 @@ button[type="submit"]:disabled {
 }
 
 .card-status strong {
-    font-size: 1.1rem;
+    font-size: 1rem;
 }
 
 .valor-positivo {
