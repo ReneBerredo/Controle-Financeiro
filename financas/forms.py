@@ -19,6 +19,14 @@ class ReceitaForm(forms.ModelForm):
 
 class DespesaForm(forms.ModelForm):
     tipo = forms.ModelChoiceField(queryset=None, label='Tipo de Despesa')
+    descricao = forms.ChoiceField(
+        choices=[
+            ('Fixa', 'Fixa'),
+            ('Variável', 'Variável'),
+            ('Investimento', 'Investimento'),
+        ],
+        label='Categoria de Gasto'
+    )
     parcelado = forms.BooleanField(required=False, label='Despesa parcelada/recorrente?')
     total_parcelas = forms.IntegerField(required=False, min_value=2, label='Quantidade de parcelas')
 
