@@ -25,21 +25,22 @@ def lista_despesas(request):
 @login_required
 def criar_receita(request):
     if request.method == 'POST':
-        form = ReceitaForm(request.POST)
+        form = ReceitaForm(request.POST, usuario=request.user)
         if form.is_valid():
             receita = form.save(commit=False)
             receita.usuario = request.user
             receita.save()
             return redirect('lista_receitas')
     else:
-        form = ReceitaForm()
+        form = ReceitaForm(usuario=request.user)
 
     return render(request, 'financas/criar_receita.html', {'form': form})
+
 
 @login_required
 def criar_despesa(request):
     if request.method == 'POST':
-        form = DespesaForm(request.POST)
+        form = DespesaForm(request.POST, usuario=request.user)
         if form.is_valid():
             parcelado = form.cleaned_data['parcelado']
             total_parcelas = form.cleaned_data['total_parcelas']
@@ -57,6 +58,7 @@ def criar_despesa(request):
                         valor=form.cleaned_data['valor'],
                         descricao=form.cleaned_data['descricao'],
                         data=data_parcela,
+                        pago=form.cleaned_data['pago'],
                         parcelado=True,
                         parcela_atual=numero,
                         total_parcelas=total_parcelas,
@@ -69,7 +71,7 @@ def criar_despesa(request):
 
             return redirect('lista_despesas')
     else:
-        form = DespesaForm()
+        form = DespesaForm(usuario=request.user)
 
     return render(request, 'financas/criar_despesa.html', {'form': form})
 
@@ -78,12 +80,12 @@ def editar_receita(request, receita_id):
     receita = get_object_or_404(Receita, id=receita_id, usuario=request.user)
 
     if request.method == 'POST':
-        form = ReceitaForm(request.POST, instance=receita)
+        form = ReceitaForm(request.POST, instance=receita, usuario=request.user)
         if form.is_valid():
             form.save()
             return redirect('lista_receitas')
     else:
-        form = ReceitaForm(instance=receita)
+        form = ReceitaForm(instance=receita, usuario=request.user)
 
     return render(request, 'financas/editar_receita.html', {'form': form})
 
