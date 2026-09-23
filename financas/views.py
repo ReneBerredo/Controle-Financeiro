@@ -7,6 +7,9 @@ from .forms import ReceitaForm, DespesaForm, TipoReceitaForm, TipoDespesaForm
 from django.shortcuts import get_object_or_404
 import uuid
 from dateutil.relativedelta import relativedelta
+from django.db.models.functions import TruncMonth
+from collections import defaultdict
+from datetime import datetime
 
 @login_required
 def lista_receitas(request):
@@ -138,13 +141,45 @@ def dashboard(request):
     saldo = total_receitas - total_despesas
 
     receitas_recebidas = receitas.filter(pago=True).aggregate(Sum('valor'))['valor__sum'] or 0
-    receitas_a_receber = despesas.filter(pago=False).aggregate(Sum('valor'))['valor__sum'] or 0
+    receitas_a_receber = receitas.filter(pago=False).aggregate(Sum('valor'))['valor__sum'] or 0
 
     despesas_pagas = despesas.filter(pago=True).aggregate(Sum('valor'))['valor__sum'] or 0
     despesas_a_pagar = despesas.filter(pago=False).aggregate(Sum('valor'))['valor__sum'] or 0
 
     receitas_por_tipo = receitas.values('tipo__nome').annotate(total=Sum('valor')).order_by('-total')
     despesas_por_tipo = despesas.values('tipo__nome').annotate(total=Sum('valor')).order_by('-total')
+
+    evolucao_receitas = (
+        receitas
+        .annotate(mes=TruncMonth('data'))
+        .values('mes')
+        .annotate(total=Sum('valor'))
+        .order_by('mes')
+    )
+
+    evolucao_despesas = (
+        despesas
+        .annotate(mes=TruncMonth('data'))
+        .values('mes')
+        .annotate(total=Sum('valor'))
+        .order_by('mes')
+    )
+
+    dados_por_mes = defaultdict(lambda: {'receitas': 0, 'despesas': 0})
+
+    for item in evolucao_receitas:
+        chave = item['mes'].strftime('%Y-%m')
+        dados_por_mes[chave]['receitas'] = float(item['total'])
+
+    for item in evolucao_despesas:
+        chave = item['mes'].strftime('%Y-%m')
+        dados_por_mes[chave]['despesas'] = float(item['total'])
+
+    meses_ordenados = sorted(dados_por_mes.keys())
+
+    evolucao_labels = [datetime.strptime(m, '%Y-%m').strftime('%b/%Y') for m in meses_ordenados]
+    evolucao_receitas_valores = [dados_por_mes[m]['receitas'] for m in meses_ordenados]
+    evolucao_despesas_valores = [dados_por_mes[m]['despesas'] for m in meses_ordenados]
 
     contexto = {
         'total_receitas': total_receitas,
@@ -158,6 +193,9 @@ def dashboard(request):
         'receitas_a_receber': receitas_a_receber,
         'despesas_pagas': despesas_pagas,
         'despesas_a_pagar': despesas_a_pagar,
+        'evolucao_labels': evolucao_labels,
+        'evolucao_receitas_valores': evolucao_receitas_valores,
+        'evolucao_despesas_valores': evolucao_despesas_valores,
     }
 
     return render(request, 'financas/dashboard.html', contexto)

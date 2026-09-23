@@ -97,6 +97,15 @@
         </div>
     </div>
 
+    <div class="secao-evolucao">
+        <h2>Evolução Financeira</h2>
+        <canvas id="grafico-evolucao"></canvas>
+    </div>
+
+    {{ evolucao_labels|json_script:"dados-labels" }}
+    {{ evolucao_receitas_valores|json_script:"dados-receitas" }}
+    {{ evolucao_despesas_valores|json_script:"dados-despesas" }}
+
     <div class="secao-categorias">
         <div class="bloco-categoria">
             <h2>Receitas por Categoria</h2>
@@ -177,6 +186,51 @@
                 document.getElementById('data_final').value = formatarData(dataFinal);
                 document.getElementById('form-filtro-periodo').submit();
             });
+        });
+    </script>
+
+    <script>
+        const labelsEvolucao = JSON.parse(document.getElementById('dados-labels').textContent);
+        const valoresReceitas = JSON.parse(document.getElementById('dados-receitas').textContent);
+        const valoresDespesas = JSON.parse(document.getElementById('dados-despesas').textContent);
+
+        const corSucesso = getComputedStyle(document.documentElement).getPropertyValue('--cor-sucesso').trim();
+        const corPerigo = getComputedStyle(document.documentElement).getPropertyValue('--cor-perigo').trim();
+        const corTexto = getComputedStyle(document.documentElement).getPropertyValue('--cor-texto').trim();
+
+        new Chart(document.getElementById('grafico-evolucao'), {
+            type: 'line',
+            data: {
+                labels: labelsEvolucao,
+                datasets: [
+                    {
+                        label: 'Receitas',
+                        data: valoresReceitas,
+                        borderColor: corSucesso,
+                        backgroundColor: corSucesso,
+                        tension: 0.3
+                    },
+                    {
+                        label: 'Despesas',
+                        data: valoresDespesas,
+                        borderColor: corPerigo,
+                        backgroundColor: corPerigo,
+                        tension: 0.3
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        labels: { color: corTexto }
+                    }
+                },
+                scales: {
+                    x: { ticks: { color: corTexto } },
+                    y: { ticks: { color: corTexto } }
+                }
+            }
         });
     </script>
 {% endblock %}
