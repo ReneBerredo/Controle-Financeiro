@@ -149,6 +149,43 @@
     {{ despesas_grafico_labels|json_script:"despesas-labels" }}
     {{ despesas_grafico_valores|json_script:"despesas-valores" }}
 
+    <div class="secao-insights">
+        <div class="bloco-categoria">
+            <h2>Resumo</h2>
+            <div class="insight-item">
+                <span class="insight-label">Maior despesa</span>
+                {% if maior_despesa %}
+                    <span class="insight-valor">{{ maior_despesa.tipo }} — R$ {{ maior_despesa.valor|floatformat:2 }}</span>
+                {% else %}
+                    <span class="insight-valor">Nenhuma despesa no período</span>
+                {% endif %}
+            </div>
+            <div class="insight-item">
+                <span class="insight-label">Total a receber</span>
+                <span class="insight-valor">R$ {{ receitas_a_receber|floatformat:2 }}</span>
+            </div>
+            <div class="insight-item">
+                <span class="insight-label">Total a pagar</span>
+                <span class="insight-valor">R$ {{ despesas_a_pagar|floatformat:2 }}</span>
+            </div>
+        </div>
+
+        <div class="bloco-categoria">
+            <h2>Regra 50/40/10</h2>
+            {% if regra_504010 %}
+                {% for item in regra_504010 %}
+                    <div class="linha-categoria-legenda">
+                        <span class="legenda-nome">{{ item.categoria }}</span>
+                        <span class="legenda-valor">R$ {{ item.total|floatformat:2 }}</span>
+                        <span class="legenda-percentual">{{ item.percentual }}%</span>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>Classifique suas despesas como Fixa, Variável ou Investimento para ver essa análise.</p>
+            {% endif %}
+        </div>
+    </div>
+
     <script>
         document.querySelectorAll('.atalho').forEach(function (botao) {
             botao.addEventListener('click', function () {

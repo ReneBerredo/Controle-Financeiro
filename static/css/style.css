@@ -601,3 +601,30 @@ button[type="submit"]:disabled {
     min-width: 45px;
     text-align: right;
 }
+
+.secao-insights {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+}
+
+.insight-item {
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--cor-borda);
+}
+
+.insight-item:last-child {
+    border-bottom: none;
+}
+
+.insight-label {
+    display: block;
+    font-size: 0.8rem;
+    opacity: 0.65;
+    margin-bottom: 0.2rem;
+}
+
+.insight-valor {
+    font-weight: 600;
+}

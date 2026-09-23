@@ -238,6 +238,17 @@ def dashboard(request):
     evolucao_receitas_valores = [dados_por_mes[m]['receitas'] for m in meses_ordenados]
     evolucao_despesas_valores = [dados_por_mes[m]['despesas'] for m in meses_ordenados]
 
+    maior_despesa = despesas.order_by('-valor').first()
+
+    gastos_por_categoria = despesas.values('descricao').annotate(total=Sum('valor')).order_by('-total')
+
+    regra_504010 = []
+    for item in gastos_por_categoria:
+        categoria = item['descricao']
+        if categoria in ['Fixa', 'Variável', 'Investimento']:
+            percentual = round((float(item['total']) / float(total_despesas)) * 100, 1) if total_despesas > 0 else 0
+            regra_504010.append({'categoria': categoria, 'total': float(item['total']), 'percentual': percentual})
+
     contexto = {
         'total_receitas': total_receitas,
         'total_despesas': total_despesas,
@@ -259,6 +270,8 @@ def dashboard(request):
         'despesas_grafico_labels': despesas_grafico_labels,
         'despesas_grafico_valores': despesas_grafico_valores,
         'despesas_itens': despesas_itens,
+        'maior_despesa': maior_despesa,
+        'regra_504010': regra_504010,
     }
 
     return render(request, 'financas/dashboard.html', contexto)
