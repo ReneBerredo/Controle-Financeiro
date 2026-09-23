@@ -94,12 +94,47 @@ def editar_despesa(request, despesa_id):
     despesa = get_object_or_404(Despesa, id=despesa_id, usuario=request.user)
 
     if request.method == 'POST':
-        form = DespesaForm(request.POST, instance=despesa)
+        form = DespesaForm(request.POST, instance=despesa, usuario=request.user)
         if form.is_valid():
-            form.save()
+            parcelado = form.cleaned_data['parcelado']
+            total_parcelas = form.cleaned_data['total_parcelas']
+
+            if parcelado and total_parcelas and not despesa.parcelado:
+                grupo = uuid.uuid4()
+                data_primeira_parcela = form.cleaned_data['data']
+
+                despesa.tipo = form.cleaned_data['tipo']
+                despesa.valor = form.cleaned_data['valor']
+                despesa.descricao = form.cleaned_data['descricao']
+                despesa.data = data_primeira_parcela
+                despesa.pago = form.cleaned_data['pago']
+                despesa.parcelado = True
+                despesa.parcela_atual = 1
+                despesa.total_parcelas = total_parcelas
+                despesa.grupo_parcelamento = grupo
+                despesa.save()
+
+                for numero in range(2, total_parcelas + 1):
+                    data_parcela = data_primeira_parcela + relativedelta(months=numero - 1)
+
+                    Despesa.objects.create(
+                        usuario=request.user,
+                        tipo=form.cleaned_data['tipo'],
+                        valor=form.cleaned_data['valor'],
+                        descricao=form.cleaned_data['descricao'],
+                        data=data_parcela,
+                        pago=form.cleaned_data['pago'],
+                        parcelado=True,
+                        parcela_atual=numero,
+                        total_parcelas=total_parcelas,
+                        grupo_parcelamento=grupo,
+                    )
+            else:
+                form.save()
+
             return redirect('lista_despesas')
     else:
-        form = DespesaForm(instance=despesa)
+        form = DespesaForm(instance=despesa, usuario=request.user)
 
     return render(request, 'financas/editar_despesa.html', {'form': form})
 
