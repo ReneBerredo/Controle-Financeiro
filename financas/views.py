@@ -6,6 +6,7 @@ from .models import Receita, Despesa
 from .forms import ReceitaForm, DespesaForm, TipoReceitaForm, TipoDespesaForm
 from django.shortcuts import get_object_or_404
 import uuid
+import json
 from dateutil.relativedelta import relativedelta
 from django.db.models.functions import TruncMonth
 from collections import defaultdict
@@ -120,6 +121,22 @@ def excluir_despesa(request, despesa_id):
 
     return render(request, 'financas/excluir_despesa.html', {'despesa': despesa})
 
+def preparar_dados_grafico(queryset, total):
+    labels = []
+    valores = []
+    itens = []
+
+    for item in queryset:
+        nome = item['tipo__nome']
+        valor = float(item['total'])
+        percentual = round((valor / float(total)) * 100, 1) if total > 0 else 0
+
+        labels.append(nome)
+        valores.append(valor)
+        itens.append({'nome': nome, 'valor': valor, 'percentual': percentual})
+
+    return labels, valores, itens
+
 @login_required
 def dashboard(request):
     receitas = Receita.objects.filter(usuario=request.user)
@@ -148,6 +165,9 @@ def dashboard(request):
 
     receitas_por_tipo = receitas.values('tipo__nome').annotate(total=Sum('valor')).order_by('-total')
     despesas_por_tipo = despesas.values('tipo__nome').annotate(total=Sum('valor')).order_by('-total')
+
+    receitas_grafico_labels, receitas_grafico_valores, receitas_itens = preparar_dados_grafico(receitas_por_tipo, total_receitas)
+    despesas_grafico_labels, despesas_grafico_valores, despesas_itens = preparar_dados_grafico(despesas_por_tipo, total_despesas)
 
     evolucao_receitas = (
         receitas
@@ -196,6 +216,12 @@ def dashboard(request):
         'evolucao_labels': evolucao_labels,
         'evolucao_receitas_valores': evolucao_receitas_valores,
         'evolucao_despesas_valores': evolucao_despesas_valores,
+        'receitas_grafico_labels': receitas_grafico_labels,
+        'receitas_grafico_valores': receitas_grafico_valores,
+        'receitas_itens': receitas_itens,
+        'despesas_grafico_labels': despesas_grafico_labels,
+        'despesas_grafico_valores': despesas_grafico_valores,
+        'despesas_itens': despesas_itens,
     }
 
     return render(request, 'financas/dashboard.html', contexto)

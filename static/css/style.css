@@ -566,3 +566,38 @@ button[type="submit"]:disabled {
     color: white;
     border-color: var(--cor-primaria);
 }
+
+.grafico-donut-container {
+    max-width: 220px;
+    margin: 0 auto 1.5rem auto;
+}
+
+.linha-categoria-legenda {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--cor-borda);
+    font-size: 0.9rem;
+}
+
+.linha-categoria-legenda:last-child {
+    border-bottom: none;
+}
+
+.legenda-nome {
+    flex: 1;
+    font-weight: 500;
+}
+
+.legenda-valor {
+    margin-right: 1rem;
+    opacity: 0.8;
+}
+
+.legenda-percentual {
+    font-weight: 700;
+    color: var(--cor-primaria);
+    min-width: 45px;
+    text-align: right;
+}
