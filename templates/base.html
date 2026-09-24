@@ -53,6 +53,10 @@
             htmlElemento.setAttribute('data-tema', novoTema);
             localStorage.setItem('tema', novoTema);
             atualizarTextoBotao(novoTema);
+
+            if (typeof desenharGraficoEvolucao === 'function') {
+                desenharGraficoEvolucao();
+            }
         });
     </script>
 </body>
