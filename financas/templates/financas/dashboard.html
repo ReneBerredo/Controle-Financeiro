@@ -6,7 +6,7 @@
     <h1>Minha Saúde Financeira</h1>
 
     <div class="saudacao">
-        <p>Olá {{ request.user.username }}! 👋</p>
+        <p>Olá {{ request.user.first_name|default:request.user.username }}! 👋</p>
         <p>Veja como estão suas finanças</p>
     </div>
 

@@ -2,8 +2,10 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.db.models import Sum
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from .models import Receita, Despesa, TipoReceita, TipoDespesa
 from .forms import ReceitaForm, DespesaForm, TipoReceitaForm, TipoDespesaForm
+from .forms_auth import CadastroForm
 from django.shortcuts import get_object_or_404
 import uuid
 import json
@@ -12,6 +14,7 @@ from django.db.models.functions import TruncMonth
 from collections import defaultdict
 from datetime import datetime
 from django.db.models import Q
+from django.contrib.auth import login
 
 @login_required
 def lista_receitas(request):
@@ -384,3 +387,22 @@ def criar_tipo_despesa(request):
         form = TipoDespesaForm()
 
     return render(request, 'financas/criar_tipo_despesa.html', {'form': form})
+
+def cadastro(request):
+    if request.method == 'POST':
+        form = CadastroForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            usuario = User.objects.create_user(
+                username=email,
+                email=email,
+                password=form.cleaned_data['password1'],
+                first_name=form.cleaned_data['first_name'],
+                last_name=form.cleaned_data['last_name'],
+            )
+            login(request, usuario, backend='financas.backends.EmailBackend')
+            return redirect('dashboard')
+    else:
+        form = CadastroForm()
+
+    return render(request, 'financas/cadastro.html', {'form': form})
