@@ -448,6 +448,7 @@ button[type="submit"]:disabled {
     padding: 1.5rem;
     flex: 1;
     min-width: 300px;
+    box-sizing: border-box;
 }
 
 .bloco-categoria h2 {
@@ -627,4 +628,26 @@ button[type="submit"]:disabled {
 
 .insight-valor {
     font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    nav {
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 1rem;
+    }
+
+    nav button {
+        margin-left: 0;
+    }
+
+    .secao-categorias,
+    .secao-insights {
+        flex-direction: column;
+    }
+
+    .bloco-categoria {
+        min-width: 0;
+        width: 100%;
+    }
 }
