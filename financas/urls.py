@@ -19,4 +19,8 @@ urlpatterns = [
     path('receitas/<int:receita_id>/alternar-pago/', views.alternar_pago_receita, name='alternar_pago_receita'),
     path('despesas/<int:despesa_id>/alternar-pago/', views.alternar_pago_despesa, name='alternar_pago_despesa'),
     path('cadastro/', views.cadastro, name='cadastro'),
+    path('esqueci-senha/', auth_views.PasswordResetView.as_view(template_name='financas/senha_reset.html'), name='password_reset'),
+    path('esqueci-senha/enviado/', auth_views.PasswordResetDoneView.as_view(template_name='financas/senha_reset_enviado.html'), name='password_reset_done'),
+    path('resetar-senha/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='financas/senha_reset_confirmar.html'), name='password_reset_confirm'),
+    path('resetar-senha/concluido/', auth_views.PasswordResetCompleteView.as_view(template_name='financas/senha_reset_concluido.html'), name='password_reset_complete'),
 ]

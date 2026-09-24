@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Definir Nova Senha{% endblock %}
+
+{% block conteudo %}
+    <h1>Definir Nova Senha</h1>
+
+    {% if validlink %}
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Salvar nova senha</button>
+        </form>
+    {% else %}
+        <p>Este link de redefinição é inválido ou já expirou. Solicite um novo link.</p>
+        <p><a href="{% url 'password_reset' %}">Solicitar novo link</a></p>
+    {% endif %}
+{% endblock %}
