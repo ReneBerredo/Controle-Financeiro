@@ -121,3 +121,8 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'dashboard'
 LOGOUT_REDIRECT_URL =   'login'
+
+AUTHENTICATION_BACKENDS = [
+    'financas.backends.EmailBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
