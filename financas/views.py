@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.db.models import Sum
 from django.contrib.auth.decorators import login_required
-from .models import Receita, Despesa
+from .models import Receita, Despesa, TipoReceita, TipoDespesa
 from .forms import ReceitaForm, DespesaForm, TipoReceitaForm, TipoDespesaForm
 from django.shortcuts import get_object_or_404
 import uuid
@@ -11,16 +11,83 @@ from dateutil.relativedelta import relativedelta
 from django.db.models.functions import TruncMonth
 from collections import defaultdict
 from datetime import datetime
+from django.db.models import Q
 
 @login_required
 def lista_receitas(request):
     receitas = Receita.objects.filter(usuario=request.user)
-    return render(request, 'financas/lista_receitas.html', {'receitas': receitas})
+
+    data_inicial = request.GET.get('data_inicial')
+    data_final = request.GET.get('data_final')
+    status = request.GET.get('status')
+    tipo_id = request.GET.get('tipo')
+
+    if data_inicial:
+        receitas = receitas.filter(data__gte=data_inicial)
+
+    if data_final:
+        receitas = receitas.filter(data__lte=data_final)
+
+    if status == 'pago':
+        receitas = receitas.filter(pago=True)
+    elif status == 'pendente':
+        receitas = receitas.filter(pago=False)
+
+    if tipo_id:
+        receitas = receitas.filter(tipo_id=tipo_id)
+
+    receitas = receitas.order_by('-data')
+
+    tipos_receita = TipoReceita.objects.filter(Q(usuario__isnull=True) | Q(usuario=request.user))
+
+    contexto = {
+        'receitas': receitas,
+        'tipos_receita': tipos_receita,
+        'data_inicial': data_inicial,
+        'data_final': data_final,
+        'status': status,
+        'tipo_id': tipo_id,
+    }
+
+    return render(request, 'financas/lista_receitas.html', contexto)
 
 @login_required
 def lista_despesas(request):
     despesas = Despesa.objects.filter(usuario=request.user)
-    return render(request, 'financas/lista_despesas.html', {'despesas': despesas})
+
+    data_inicial = request.GET.get('data_inicial')
+    data_final = request.GET.get('data_final')
+    status = request.GET.get('status')
+    tipo_id = request.GET.get('tipo')
+
+    if data_inicial:
+        despesas = despesas.filter(data__gte=data_inicial)
+
+    if data_final:
+        despesas = despesas.filter(data__lte=data_final)
+
+    if status == 'pago':
+        despesas = despesas.filter(pago=True)
+    elif status == 'pendente':
+        despesas = despesas.filter(pago=False)
+
+    if tipo_id:
+        despesas = despesas.filter(tipo_id=tipo_id)
+
+    despesas = despesas.order_by('-data')
+
+    tipos_despesa = TipoDespesa.objects.filter(Q(usuario__isnull=True) | Q(usuario=request.user))
+
+    contexto = {
+        'despesas': despesas,
+        'tipos_despesa': tipos_despesa,
+        'data_inicial': data_inicial,
+        'data_final': data_final,
+        'status': status,
+        'tipo_id': tipo_id,
+    }
+
+    return render(request, 'financas/lista_despesas.html', contexto)
 
 @login_required
 def criar_receita(request):

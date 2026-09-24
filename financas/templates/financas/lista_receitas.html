@@ -7,6 +7,38 @@
 
     <p><a href="{% url 'criar_receita' %}">+ Nova Receita</a></p>
 
+    <div class="filtro-container">
+        <form method="get" class="form-filtro">
+            <div>
+                <label for="data_inicial">De:</label>
+                <input type="date" id="data_inicial" name="data_inicial" value="{{ data_inicial|default:'' }}">
+            </div>
+            <div>
+                <label for="data_final">Até:</label>
+                <input type="date" id="data_final" name="data_final" value="{{ data_final|default:'' }}">
+            </div>
+            <div>
+                <label for="status">Status:</label>
+                <select id="status" name="status">
+                    <option value="">Todos</option>
+                    <option value="pago" {% if status == 'pago' %}selected{% endif %}>Recebido</option>
+                    <option value="pendente" {% if status == 'pendente' %}selected{% endif %}>A receber</option>
+                </select>
+            </div>
+            <div>
+                <label for="tipo">Categoria:</label>
+                <select id="tipo" name="tipo">
+                    <option value="">Todas</option>
+                    {% for t in tipos_receita %}
+                        <option value="{{ t.id }}" {% if tipo_id == t.id|stringformat:"s" %}selected{% endif %}>{{ t.nome }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit">Filtrar</button>
+            <a href="{% url 'lista_receitas' %}" class="link-limpar">Limpar filtro</a>
+        </form>
+    </div>
+
     <ul>
     {% for receita in receitas %}
         <li>
