@@ -691,8 +691,15 @@ button[type="submit"]:disabled {
 }
 
 .auth-logo {
-    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
     margin-bottom: 1.5rem;
+}
+
+.auth-logo h1 {
+    font-size: 1.8rem;
+    margin: 0;
 }
 
 .auth-frase {
