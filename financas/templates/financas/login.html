@@ -1,19 +1,37 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Controle Financeiro</title>
-</head>
-<body>
-    <h1>Login</h1>
+{% extends 'base_auth.html' %}
 
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Entrar</button>
-    </form>
+{% block title %}Entrar - Visão Financeira{% endblock %}
 
-    <p><a href="{% url 'password_reset' %}">Esqueci minha senha</a></p>
-</body>
-</html>
+{% block conteudo %}
+<div class="auth-container">
+    <div class="auth-institucional">
+        <h1 class="auth-logo">Visão Financeira</h1>
+        <p class="auth-frase">Suas finanças na palma de sua mão.</p>
+        <p class="auth-descricao">Organize suas receitas, despesas e acompanhe sua vida financeira de forma simples, inteligente e visual.</p>
+
+        <ul class="auth-beneficios">
+            <li>📊 Dashboard completo com gráficos e indicadores</li>
+            <li>💰 Controle de receitas e despesas por categoria</li>
+            <li>🔁 Gestão de despesas parceladas e recorrentes</li>
+            <li>✅ Acompanhamento de pagamentos e recebimentos</li>
+        </ul>
+    </div>
+
+    <div class="auth-formulario">
+        <h2>Entrar</h2>
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Entrar</button>
+        </form>
+
+        <p class="auth-link-secundario"><a href="{% url 'password_reset' %}">Esqueci minha senha</a></p>
+
+        <div class="auth-divisor"></div>
+
+        <p class="auth-cadastro-texto">Ainda não possui uma conta?</p>
+        <a href="{% url 'cadastro' %}" class="auth-botao-secundario">Criar minha conta</a>
+    </div>
+</div>
+{% endblock %}

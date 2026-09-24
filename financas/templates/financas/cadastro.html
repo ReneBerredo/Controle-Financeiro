@@ -1,15 +1,35 @@
-{% extends 'base.html' %}
+{% extends 'base_auth.html' %}
 
-{% block title %}Criar Conta{% endblock %}
+{% block title %}Criar Conta - Visão Financeira{% endblock %}
 
 {% block conteudo %}
-    <h1>Criar Conta</h1>
+<div class="auth-container">
+    <div class="auth-institucional">
+        <h1 class="auth-logo">Visão Financeira</h1>
+        <p class="auth-frase">Comece a organizar sua vida financeira hoje.</p>
+        <p class="auth-descricao">Crie sua conta e tenha acesso a um painel completo para acompanhar receitas, despesas e sua evolução financeira.</p>
 
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Criar minha conta</button>
-    </form>
+        <ul class="auth-beneficios">
+            <li>📊 Dashboard completo com gráficos e indicadores</li>
+            <li>💰 Controle de receitas e despesas por categoria</li>
+            <li>🔁 Gestão de despesas parceladas e recorrentes</li>
+            <li>✅ Acompanhamento de pagamentos e recebimentos</li>
+        </ul>
+    </div>
 
-    <p>Já tem uma conta? <a href="{% url 'login' %}">Entrar</a></p>
+    <div class="auth-formulario">
+        <h2>Criar Conta</h2>
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Criar minha conta</button>
+        </form>
+
+        <div class="auth-divisor"></div>
+
+        <p class="auth-cadastro-texto">Já tem uma conta?</p>
+        <a href="{% url 'login' %}" class="auth-botao-secundario">Entrar</a>
+    </div>
+</div>
 {% endblock %}
