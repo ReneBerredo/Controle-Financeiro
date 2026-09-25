@@ -70,6 +70,20 @@ nav button:hover {
     border-color: var(--cor-primaria);
 }
 
+.nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-right: 1rem;
+}
+
+.nav-logo svg {
+    width: 28px;
+    height: 28px;
+}
+
 main {
     max-width: 900px;
     margin: 2rem auto;
@@ -793,3 +807,4 @@ button[type="submit"]:disabled {
     padding: 0.6rem 0;
     display: block;
 }
+
