@@ -3,6 +3,7 @@ from django.shortcuts import redirect
 from django.db.models import Sum
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.contrib import messages
 from .models import Receita, Despesa, TipoReceita, TipoDespesa
 from .forms import ReceitaForm, DespesaForm, TipoReceitaForm, TipoDespesaForm
 from .forms_auth import CadastroForm
@@ -400,8 +401,8 @@ def cadastro(request):
                 first_name=form.cleaned_data['first_name'],
                 last_name=form.cleaned_data['last_name'],
             )
-            login(request, usuario, backend='financas.backends.EmailBackend')
-            return redirect('dashboard')
+            messages.success(request, 'Conta criada com sucesso! Faça login para continuar.')
+            return redirect('login')
     else:
         form = CadastroForm()
 

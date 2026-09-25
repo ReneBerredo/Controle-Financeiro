@@ -1,6 +1,7 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from . import views
+from .forms_auth import LoginForm
 
 urlpatterns = [
     path('', views.dashboard, name='dashboard'),
@@ -14,7 +15,7 @@ urlpatterns = [
     path('despesas/nova/', views.criar_despesa, name='criar_despesa'),
     path('despesas/<int:despesa_id>/editar/', views.editar_despesa, name='editar_despesa'),
     path('despesas/<int:despesa_id>/excluir/', views.excluir_despesa, name='excluir_despesa'),
-    path('login/', auth_views.LoginView.as_view(template_name='financas/login.html'), name='login'),
+    path('login/', auth_views.LoginView.as_view(template_name='financas/login.html', authentication_form=LoginForm), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('receitas/<int:receita_id>/alternar-pago/', views.alternar_pago_receita, name='alternar_pago_receita'),
     path('despesas/<int:despesa_id>/alternar-pago/', views.alternar_pago_despesa, name='alternar_pago_despesa'),

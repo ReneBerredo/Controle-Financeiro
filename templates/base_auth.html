@@ -8,6 +8,19 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body class="pagina-auth">
+    <head class="header-simples">
+        <div class="nav-logo">
+            {% include 'partials/logo.html' %}
+            <span>Visão Financeira</span>
+        </div>
+        {% if user.is_authenticated %}
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit">Sair</button>
+            </form>
+        {% endif %}
+    </head>
+    
     <main>
         {% block conteudo %}
         {% endblock %}

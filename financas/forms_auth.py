@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
+from django.contrib.auth.forms import AuthenticationForm
 
 
 class CadastroForm(forms.Form):
@@ -30,4 +31,14 @@ class CadastroForm(forms.Form):
             raise forms.ValidationError('As senhas não coincidem.')
 
         return cleaned_data
-    
+
+class LoginForm(AuthenticationForm):
+    error_messages = {
+        'invalid_login': 'E-mail ou senha incorretos. Verifique e tente novamente.',
+        'inactive': 'Esta conta está inativa.',
+    }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].label = 'E-mail'
+        
