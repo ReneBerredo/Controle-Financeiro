@@ -9,9 +9,40 @@
     {% if validlink %}
         <form method="post">
             {% csrf_token %}
-            {{ form.as_p }}
+
+            <p>
+                {{ form.new_password1.label_tag }}
+                <span class="campo-senha">
+                    {{ form.new_password1 }}
+                    <button type="button" class="botao-ver-senha" data-alvo="{{ form.new_password1.id_for_label }}">👁️</button>
+                </span>
+            </p>
+
+            <p>
+                {{ form.new_password2.label_tag }}
+                <span class="campo-senha">
+                    {{ form.new_password2 }}
+                    <button type="button" class="botao-ver-senha" data-alvo="{{ form.new_password2.id_for_label }}">👁️</button>
+                </span>
+            </p>
+
             <button type="submit">Salvar nova senha</button>
         </form>
+
+        <script>
+            document.querySelectorAll('.botao-ver-senha').forEach(function (botao) {
+                botao.addEventListener('click', function () {
+                    const campo = document.getElementById(botao.dataset.alvo);
+                    if (campo.type === 'password') {
+                        campo.type = 'text';
+                        botao.textContent = '🙈';
+                    } else {
+                        campo.type = 'password';
+                        botao.textContent = '👁️';
+                    }
+                });
+            });
+        </script>
     {% else %}
         <p>Este link de redefinição é inválido ou já expirou. Solicite um novo link.</p>
         <p><a href="{% url 'password_reset' %}">Solicitar novo link</a></p>

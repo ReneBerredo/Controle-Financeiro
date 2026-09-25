@@ -31,7 +31,20 @@
         
         <form method="post">
             {% csrf_token %}
-            {{ form.as_p }}
+
+            <p>
+                {{ form.username.label_tag }}
+                {{ form.username }}
+            </p>
+
+            <p>
+                {{ form.password.label_tag }}
+                <span class="campo-senha">
+                    {{ form.password }}
+                    <button type="button" class="botao-ver-senha" data-alvo="{{ form.password.id_for_label }}">👁️</button>
+                </span>
+            </p>
+
             <button type="submit">Entrar</button>
         </form>
 
@@ -43,4 +56,19 @@
         <a href="{% url 'cadastro' %}" class="auth-botao-secundario">Criar minha conta</a>
     </div>
 </div>
+
+<script>
+    document.querySelectorAll('.botao-ver-senha').forEach(function (botao) {
+        botao.addEventListener('click', function () {
+            const campo = document.getElementById(botao.dataset.alvo);
+            if (campo.type === 'password') {
+                campo.type = 'text';
+                botao.textContent = '🙈';
+            } else {
+                campo.type = 'password';
+                botao.textContent = '👁️';
+            }
+        });
+    });
+</script>
 {% endblock %}
