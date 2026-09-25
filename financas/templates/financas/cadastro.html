@@ -5,7 +5,10 @@
 {% block conteudo %}
 <div class="auth-container">
     <div class="auth-institucional">
-        <h1 class="auth-logo">Visão Financeira</h1>
+        <div class="auth-logo">
+            {% include 'partials/logo.html' %}
+            <h1>Visão Financeira</h1>
+        </div>
         <p class="auth-frase">Comece a organizar sua vida financeira hoje.</p>
         <p class="auth-descricao">Crie sua conta e tenha acesso a um painel completo para acompanhar receitas, despesas e sua evolução financeira.</p>
 
