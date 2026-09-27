@@ -1,24 +1,26 @@
-{% extends 'base_auth.html' %}
+{% extends 'base_landing.html' %}
 
 {% block title %}Visão Financeira - Organize suas finanças{% endblock %}
 
 {% block conteudo %}
-<header class="landing-header">
-    <div class="nav-logo">
-        {% include 'partials/logo.html' %}
-        <span>Visão Financeira</span>
-    </div>
-    <div class="landing-header-botoes">
-        <a href="{% url 'login' %}" class="landing-botao-entrar">Entrar</a>
-        <a href="{% url 'cadastro' %}" class="landing-botao-cadastro">Criar minha conta</a>
-    </div>
-</header>
+<div class="landing-topo">
+    <header class="landing-header">
+        <div class="nav-logo">
+            {% include 'partials/logo.html' %}
+            <span>Visão Financeira</span>
+        </div>
+        <div class="landing-header-botoes">
+            <a href="{% url 'login' %}" class="landing-botao-entrar">Entrar</a>
+            <a href="{% url 'cadastro' %}" class="landing-botao-cadastro">Criar minha conta</a>
+        </div>
+    </header>
 
-<section class="landing-hero">
-    <h1>Organize sua vida financeira de forma simples e inteligente.</h1>
-    <p>Acompanhe receitas, despesas, pagamentos e a evolução da sua saúde financeira em um só lugar.</p>
-    <a href="{% url 'cadastro' %}" class="landing-cta">Criar minha conta</a>
-</section>
+    <section class="landing-hero">
+        <h1>Organize sua vida financeira de forma simples e inteligente.</h1>
+        <p>Acompanhe receitas, despesas, pagamentos e a evolução da sua saúde financeira em um só lugar.</p>
+        <a href="{% url 'cadastro' %}" class="landing-cta">Criar minha conta</a>
+    </section>
+</div>
 
 <section class="landing-funcionalidades">
     <h2>Tudo que você precisa para controlar suas finanças</h2>
