@@ -39,6 +39,11 @@
         </form>
     </div>
 
+    <div class="total-filtrado total-filtrado-receita">
+        <span>Total de receitas no período selecionado</span>
+        <strong class="valor-positivo">R$ {{ total_filtrado|floatformat:2 }}</strong>
+    </div>
+
     <ul>
     {% for receita in receitas %}
         <li>

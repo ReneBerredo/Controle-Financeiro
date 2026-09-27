@@ -39,6 +39,11 @@
         </form>
     </div>
 
+    <div class="total-filtrado">
+        <span>Total de despesas no período selecionado</span>
+        <strong class="valor-negativo">R$ {{ total_filtrado|floatformat:2 }}</strong>
+    </div>
+
     <ul>
     {% for despesa in despesas %}
         <li>

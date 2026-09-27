@@ -40,6 +40,8 @@ def lista_receitas(request):
     if tipo_id:
         receitas = receitas.filter(tipo_id=tipo_id)
 
+    total_filtrado = receitas.aggregate(Sum('valor'))['valor__sum'] or 0
+
     receitas = receitas.order_by('-data')
 
     tipos_receita = TipoReceita.objects.filter(Q(usuario__isnull=True) | Q(usuario=request.user))
@@ -51,6 +53,7 @@ def lista_receitas(request):
         'data_final': data_final,
         'status': status,
         'tipo_id': tipo_id,
+        'total_filtrado': total_filtrado,
     }
 
     return render(request, 'financas/lista_receitas.html', contexto)
@@ -78,6 +81,8 @@ def lista_despesas(request):
     if tipo_id:
         despesas = despesas.filter(tipo_id=tipo_id)
 
+    total_filtrado = despesas.aggregate(Sum('valor'))['valor__sum'] or 0
+
     despesas = despesas.order_by('-data')
 
     tipos_despesa = TipoDespesa.objects.filter(Q(usuario__isnull=True) | Q(usuario=request.user))
@@ -89,6 +94,7 @@ def lista_despesas(request):
         'data_final': data_final,
         'status': status,
         'tipo_id': tipo_id,
+        'total_filtrado': total_filtrado,
     }
 
     return render(request, 'financas/lista_despesas.html', contexto)
