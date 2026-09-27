@@ -43,4 +43,10 @@ class Despesa(models.Model):
     def __str__(self):
         return f'{self.descricao} - R$ {self.valor}'
     
+class CategoriaOrcamento(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name='categorias_orcamento')
+    nome = models.CharField(max_length=100)
+    percentual_meta = models.DecimalField(max_digits=5, decimal_places=2)
 
+    def __str__(self):
+        return f'{self.nome} ({self.percentual_meta}%)'
