@@ -407,3 +407,9 @@ def cadastro(request):
         form = CadastroForm()
 
     return render(request, 'financas/cadastro.html', {'form': form})
+
+def home(request):
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+
+    return render(request, 'financas/landing.html')
