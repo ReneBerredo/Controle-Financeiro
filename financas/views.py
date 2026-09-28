@@ -13,9 +13,11 @@ import json
 from dateutil.relativedelta import relativedelta
 from django.db.models.functions import TruncMonth
 from collections import defaultdict
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.db.models import Q
 from django.contrib.auth import login
+from django.utils import timezone
+from .models import Assinatura
 
 @login_required
 def lista_receitas(request):
@@ -270,6 +272,13 @@ def garantir_categorias_padrao(usuario):
     if not CategoriaOrcamento.objects.filter(usuario=usuario).exists():
         criar_categorias_padrao(usuario)
 
+def criar_assinatura_trial(usuario):
+    data_fim = timezone.now().date() + timedelta(days=30)
+    Assinatura.objects.get_or_create(
+        usuario=usuario,
+        defaults={'status': 'trial', 'data_fim': data_fim},
+    )
+
 @login_required
 def dashboard(request):
     garantir_categorias_padrao(request.user)
@@ -440,6 +449,7 @@ def cadastro(request):
                 last_name=form.cleaned_data['last_name'],
             )
             criar_categorias_padrao(usuario)
+            criar_assinatura_trial(usuario)
             messages.success(request, 'Conta criada com sucesso! Faça login para continuar.')
             return redirect('login')
     else:
