@@ -4,7 +4,7 @@ from django.db.models import Sum
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
-from .models import Receita, Despesa, TipoReceita, TipoDespesa
+from .models import Receita, Despesa, TipoReceita, TipoDespesa, CategoriaOrcamento
 from .forms import ReceitaForm, DespesaForm, TipoReceitaForm, TipoDespesaForm
 from .forms_auth import CadastroForm
 from django.shortcuts import get_object_or_404
@@ -116,6 +116,7 @@ def criar_receita(request):
 
 @login_required
 def criar_despesa(request):
+    garantir_categorias_padrao(request.user)
     if request.method == 'POST':
         form = DespesaForm(request.POST, usuario=request.user)
         if form.is_valid():
@@ -168,6 +169,7 @@ def editar_receita(request, receita_id):
 
 @login_required
 def editar_despesa(request, despesa_id):
+    garantir_categorias_padrao(request.user)
     despesa = get_object_or_404(Despesa, id=despesa_id, usuario=request.user)
 
     if request.method == 'POST':
@@ -250,6 +252,23 @@ def preparar_dados_grafico(queryset, total):
         itens.append({'nome': nome, 'valor': valor, 'percentual': percentual})
 
     return labels, valores, itens
+
+def criar_categorias_padrao(usuario):
+    padroes = [
+        ('Fixa', 50),
+        ('Variável', 40),
+        ('Investimento', 10),
+    ]
+    for nome, percentual in padroes:
+        CategoriaOrcamento.objects.get_or_create(
+            usuario=usuario,
+            nome=nome,
+            defaults={'percentual_meta': percentual},
+        )
+
+def garantir_categorias_padrao(usuario):
+    if not CategoriaOrcamento.objects.filter(usuario=usuario).exists():
+        criar_categorias_padrao(usuario)
 
 @login_required
 def dashboard(request):
@@ -407,6 +426,7 @@ def cadastro(request):
                 first_name=form.cleaned_data['first_name'],
                 last_name=form.cleaned_data['last_name'],
             )
+            criar_categorias_padrao(usuario)
             messages.success(request, 'Conta criada com sucesso! Faça login para continuar.')
             return redirect('login')
     else:

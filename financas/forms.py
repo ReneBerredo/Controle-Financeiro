@@ -1,6 +1,6 @@
 from django import forms
 from django.db.models import Q
-from .models import Receita, Despesa, TipoReceita, TipoDespesa
+from .models import Receita, Despesa, TipoReceita, TipoDespesa, CategoriaOrcamento
 
 class ReceitaForm(forms.ModelForm):
     tipo = forms.ModelChoiceField(queryset=None, label='Tipo de Receita')
@@ -19,14 +19,7 @@ class ReceitaForm(forms.ModelForm):
 
 class DespesaForm(forms.ModelForm):
     tipo = forms.ModelChoiceField(queryset=None, label='Tipo de Despesa')
-    descricao = forms.ChoiceField(
-        choices=[
-            ('Fixa', 'Fixa'),
-            ('Variável', 'Variável'),
-            ('Investimento', 'Investimento'),
-        ],
-        label='Categoria de Gasto'
-    )
+    descricao = forms.ChoiceField(label='Categoria de Gasto')
     parcelado = forms.BooleanField(required=False, label='Despesa parcelada/recorrente?')
     total_parcelas = forms.IntegerField(required=False, min_value=2, label='Quantidade de parcelas')
 
@@ -41,6 +34,9 @@ class DespesaForm(forms.ModelForm):
         usuario = kwargs.pop('usuario', None)
         super().__init__(*args, **kwargs)
         self.fields['tipo'].queryset = TipoDespesa.objects.filter(Q(usuario__isnull=True) | Q(usuario=usuario))
+
+        categorias = CategoriaOrcamento.objects.filter(usuario=usuario)
+        self.fields['descricao'].choices = [(c.nome, c.nome) for c in categorias]
 
     def clean(self):
         cleaned_data = super().clean()
