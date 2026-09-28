@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Minha Regra de Orçamento{% endblock %}
+
+{% block conteudo %}
+    <h1>Minha Regra de Orçamento</h1>
+    <p>Defina como você quer dividir suas despesas. Cada categoria tem uma meta de percentual sobre o total gasto.</p>
+
+    {% if passou_de_100 %}
+        <p class="mensagem-alerta">Atenção: a soma das suas metas é {{ soma_percentuais }}%, acima de 100%. Ajuste os percentuais para que fechem em até 100%.</p>
+    {% else %}
+        <p class="soma-metas">Soma das metas: <strong>{{ soma_percentuais }}%</strong></p>
+    {% endif %}
+
+    <p><a href="{% url 'criar_categoria_orcamento' %}">+ Nova Categoria</a></p>
+
+    <ul>
+        {% for categoria in categorias %}
+            <li>
+                <div class="item-info">
+                    <div class="item-principal">
+                        <span class="item-descricao">{{ categoria.nome }}</span>
+                        <span class="item-valor">{{ categoria.percentual_meta }}%</span>
+                    </div>
+                </div>
+                <div class="item-acoes">
+                    <a href="{% url 'editar_categoria_orcamento' categoria.id %}">Editar</a>
+                    <a href="{% url 'excluir_categoria_orcamento' categoria.id %}">Excluir</a>
+                </div>
+            </li>
+        {% empty %}
+            <li>Nenhuma categoria cadastrada ainda.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

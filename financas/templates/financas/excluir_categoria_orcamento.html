@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Excluir Categoria{% endblock %}
+
+{% block conteudo %}
+    <h1>Excluir Categoria</h1>
+
+    <p>Tem certeza que deseja excluir a categoria <strong>{{ categoria.nome }}</strong> ({{ categoria.percentual_meta }}%)?</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Sim, excluir</button>
+    </form>
+
+    <p><a href="{% url 'lista_categorias_orcamento' %}">Cancelar</a></p>
+{% endblock %}

@@ -57,4 +57,12 @@ class TipoDespesaForm(forms.ModelForm):
     class Meta:
         model = TipoDespesa
         fields = ['nome']
-        
+
+class CategoriaOrcamentoForm(forms.ModelForm):
+    class Meta:
+        model = CategoriaOrcamento
+        fields = ['nome', 'percentual_meta']
+        labels = {
+            'nome': 'Nome da categoria',
+            'percentual_meta': 'Meta de percentual (%)',
+        }

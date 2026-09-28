@@ -24,4 +24,8 @@ urlpatterns = [
     path('esqueci-senha/enviado/', auth_views.PasswordResetDoneView.as_view(template_name='financas/senha_reset_enviado.html'), name='password_reset_done'),
     path('resetar-senha/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='financas/senha_reset_confirmar.html'), name='password_reset_confirm'),
     path('resetar-senha/concluido/', auth_views.PasswordResetCompleteView.as_view(template_name='financas/senha_reset_concluido.html'), name='password_reset_complete'),
+    path('categorias-orcamento/', views.lista_categorias_orcamento, name='lista_categorias_orcamento'),
+    path('categorias-orcamento/nova/', views.criar_categoria_orcamento, name='criar_categoria_orcamento'),
+    path('categorias-orcamento/<int:categoria_id>/editar/', views.editar_categoria_orcamento, name='editar_categoria_orcamento'),
+    path('categorias-orcamento/<int:categoria_id>/excluir/', views.excluir_categoria_orcamento, name='excluir_categoria_orcamento'),
 ]

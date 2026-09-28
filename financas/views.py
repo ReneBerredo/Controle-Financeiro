@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
 from .models import Receita, Despesa, TipoReceita, TipoDespesa, CategoriaOrcamento
-from .forms import ReceitaForm, DespesaForm, TipoReceitaForm, TipoDespesaForm
+from .forms import ReceitaForm, DespesaForm, TipoReceitaForm, TipoDespesaForm, CategoriaOrcamentoForm
 from .forms_auth import CadastroForm
 from django.shortcuts import get_object_or_404
 import uuid
@@ -439,3 +439,57 @@ def home(request):
         return redirect('dashboard')
 
     return render(request, 'financas/landing.html')
+
+@login_required
+def lista_categorias_orcamento(request):
+    garantir_categorias_padrao(request.user)
+    categorias = CategoriaOrcamento.objects.filter(usuario=request.user)
+    soma_percentuais = categorias.aggregate(Sum('percentual_meta'))['percentual_meta__sum'] or 0
+
+    contexto = {
+        'categorias': categorias,
+        'soma_percentuais': soma_percentuais,
+        'passou_de_100': soma_percentuais > 100,
+    }
+    return render(request, 'financas/lista_categorias_orcamento.html', contexto)
+
+
+@login_required
+def criar_categoria_orcamento(request):
+    if request.method == 'POST':
+        form = CategoriaOrcamentoForm(request.POST)
+        if form.is_valid():
+            categoria = form.save(commit=False)
+            categoria.usuario = request.user
+            categoria.save()
+            return redirect('lista_categorias_orcamento')
+    else:
+        form = CategoriaOrcamentoForm()
+
+    return render(request, 'financas/form_categoria_orcamento.html', {'form': form, 'titulo': 'Nova Categoria'})
+
+
+@login_required
+def editar_categoria_orcamento(request, categoria_id):
+    categoria = get_object_or_404(CategoriaOrcamento, id=categoria_id, usuario=request.user)
+
+    if request.method == 'POST':
+        form = CategoriaOrcamentoForm(request.POST, instance=categoria)
+        if form.is_valid():
+            form.save()
+            return redirect('lista_categorias_orcamento')
+    else:
+        form = CategoriaOrcamentoForm(instance=categoria)
+
+    return render(request, 'financas/form_categoria_orcamento.html', {'form': form, 'titulo': 'Editar Categoria'})
+
+
+@login_required
+def excluir_categoria_orcamento(request, categoria_id):
+    categoria = get_object_or_404(CategoriaOrcamento, id=categoria_id, usuario=request.user)
+
+    if request.method == 'POST':
+        categoria.delete()
+        return redirect('lista_categorias_orcamento')
+
+    return render(request, 'financas/excluir_categoria_orcamento.html', {'categoria': categoria})
