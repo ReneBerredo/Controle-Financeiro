@@ -50,3 +50,20 @@ class CategoriaOrcamento(models.Model):
 
     def __str__(self):
         return f'{self.nome} ({self.percentual_meta}%)'
+
+class Assinatura(models.Model):
+    STATUS_CHOICES = [
+        ('trial', 'Período de Teste'),
+        ('ativa', 'Ativa'),
+        ('expirada', 'Expirada'),
+    ]
+
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE, related_name='assinatura')
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='trial')
+    data_inicio = models.DateField(auto_now_add=True)
+    data_fim = models.DateField()
+    plano = models.CharField(max_length=100, blank=True)
+
+    def __str__(self):
+        return f'{self.usuario.email} - {self.get_status_display()}'
+    
