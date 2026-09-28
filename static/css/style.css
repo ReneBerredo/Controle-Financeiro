@@ -1033,3 +1033,7 @@ button[type="submit"]:disabled {
     margin-bottom: 1rem;
     opacity: 0.8;
 }
+
+.percentual-acima {
+    color: var(--cor-perigo) !important;
+}

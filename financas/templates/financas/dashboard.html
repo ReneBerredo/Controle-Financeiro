@@ -171,17 +171,17 @@
         </div>
 
         <div class="bloco-categoria">
-            <h2>Regra 50/40/10</h2>
-            {% if regra_504010 %}
-                {% for item in regra_504010 %}
+            <h2>Minha Regra de Orçamento</h2>
+            {% if regra_orcamento %}
+                {% for item in regra_orcamento %}
                     <div class="linha-categoria-legenda">
                         <span class="legenda-nome">{{ item.categoria }}</span>
-                        <span class="legenda-valor">R$ {{ item.total|floatformat:2 }}</span>
-                        <span class="legenda-percentual">{{ item.percentual }}%</span>
+                        <span class="legenda-valor">R$ {{ item.total|floatformat:2 }} de {{ item.meta }}%</span>
+                        <span class="legenda-percentual {% if item.percentual > item.meta %}percentual-acima{% endif %}">{{ item.percentual }}%</span>
                     </div>
                 {% endfor %}
             {% else %}
-                <p>Classifique suas despesas como Fixa, Variável ou Investimento para ver essa análise.</p>
+                <p>Você ainda não tem categoria de orçamento. <a href="{% url 'lista_categoria_orcamento' %}">Criar categoria</a>.</p>
             {% endif %}
         </div>
     </div>

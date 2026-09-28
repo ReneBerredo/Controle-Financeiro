@@ -272,6 +272,7 @@ def garantir_categorias_padrao(usuario):
 
 @login_required
 def dashboard(request):
+    garantir_categorias_padrao(request.user)
     receitas = Receita.objects.filter(usuario=request.user)
     despesas = Despesa.objects.filter(usuario=request.user)
 
@@ -338,12 +339,24 @@ def dashboard(request):
 
     gastos_por_categoria = despesas.values('descricao').annotate(total=Sum('valor')).order_by('-total')
 
-    regra_504010 = []
-    for item in gastos_por_categoria:
-        categoria = item['descricao']
-        if categoria in ['Fixa', 'Variável', 'Investimento']:
-            percentual = round((float(item['total']) / float(total_despesas)) * 100, 1) if total_despesas > 0 else 0
-            regra_504010.append({'categoria': categoria, 'total': float(item['total']), 'percentual': percentual})
+    categorias_orcamento = CategoriaOrcamento.objects.filter(usuario=request.user)
+
+    gastos_por_categoria = {
+        item['descricao']: float(item['total'])
+        for item in despesas.values('descricao').annotate(total=Sum('valor'))
+    }
+
+    regra_orcamento = []
+    for categoria in categorias_orcamento:
+        total_gasto = gastos_por_categoria.get(categoria.nome, 0)
+        percentual_real = round((total_gasto / float(total_despesas)) * 100, 1) if total_despesas > 0 else 0
+
+        regra_orcamento.append({
+            'categoria': categoria.nome,
+            'total': total_gasto,
+            'percentual': percentual_real,
+            'meta': float(categoria.percentual_meta),
+        })
 
     contexto = {
         'total_receitas': total_receitas,
@@ -367,7 +380,7 @@ def dashboard(request):
         'despesas_grafico_valores': despesas_grafico_valores,
         'despesas_itens': despesas_itens,
         'maior_despesa': maior_despesa,
-        'regra_504010': regra_504010,
+        'regra_orcamento': regra_orcamento,
     }
 
     return render(request, 'financas/dashboard.html', contexto)
