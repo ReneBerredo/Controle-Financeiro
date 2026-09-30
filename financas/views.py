@@ -288,11 +288,13 @@ def criar_assinatura_trial(usuario):
         usuario=usuario,
         defaults={'status': status, 'data_fim': data_fim},
     )
-    
+
 @login_required
 def dashboard(request):
     garantir_categorias_padrao(request.user)
     garantir_assinatura(request.user)
+
+    assinatura = Assinatura.objects.get(usuario=request.user)
     
     receitas = Receita.objects.filter(usuario=request.user)
     despesas = Despesa.objects.filter(usuario=request.user)
@@ -402,6 +404,7 @@ def dashboard(request):
         'despesas_itens': despesas_itens,
         'maior_despesa': maior_despesa,
         'regra_orcamento': regra_orcamento,
+        'assinatura': assinatura,
     }
 
     return render(request, 'financas/dashboard.html', contexto)

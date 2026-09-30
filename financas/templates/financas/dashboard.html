@@ -10,6 +10,16 @@
         <p>Veja como estão suas finanças</p>
     </div>
 
+    {% if assinatura.status == 'trial' %}
+        <div class="aviso-assinatura {% if assinatura.dias_restantes <= 3 %}aviso-urgente{% endif %}">
+            {% if assinatura.dias_restantes <= 3 %}
+                Seu período gratuito termina em {{ assinatura.dias_restantes }} dia{{ assinatura.dias_restantes|pluralize }}. Assine agora para continuar utilizando o Visão Financeira.
+            {% else %}
+                Seu período gratuito termina em {{ assinatura.dias_restantes }} dias.
+            {% endif %}
+        </div>
+    {% endif %}
+
     <div class="filtro-container">
         <form method="get" class="form-filtro" id="form-filtro-periodo">
             <div>

@@ -1037,3 +1037,17 @@ button[type="submit"]:disabled {
 .percentual-acima {
     color: var(--cor-perigo) !important;
 }
+
+.aviso-assinatura {
+    background-color: #dbeafe;
+    color: #1e40af;
+    padding: 0.8rem 1.2rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+}
+
+.aviso-urgente {
+    background-color: #fee2e2;
+    color: #991b1b;
+}

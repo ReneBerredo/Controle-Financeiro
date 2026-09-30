@@ -66,4 +66,9 @@ class Assinatura(models.Model):
 
     def __str__(self):
         return f'{self.usuario.email} - {self.get_status_display()}'
+
+    def dias_restantes(self):
+        from django.utils import timezone
+        delta = self.data_fim - timezone.now().date()
+        return max(delta.days, 0)
     
