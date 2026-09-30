@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Minha Assinatura{% endblock %}
+
+{% block conteudo %}
+    <h1>Minha Assinatura</h1>
+
+    <div class="card-status">
+        <div>
+            <span class="status-label">Status</span>
+            <strong>{{ assinatura.get_status_display }}</strong>
+        </div>
+    </div>
+
+    {% if assinatura.status == 'trial' %}
+        <p>Seu período gratuito termina em {{ assinatura.dias_restantes }} dia{{ assinatura.dias_restantes|pluralize }}.</p>
+    {% elif assinatura.status == 'expirada' %}
+        <p>Seu período gratuito terminou. Assine o Visão Financeira para continuar utilizando seus dados financeiros.</p>
+    {% else %}
+        <p>Sua assinatura está ativa até {{ assinatura.data_fim|date:"d/m/Y" }}.</p>
+    {% endif %}
+
+    <p><em>Em breve: opções de planos e pagamento.</em></p>
+{% endblock %}

@@ -531,3 +531,8 @@ def excluir_categoria_orcamento(request, categoria_id):
         return redirect('lista_categorias_orcamento')
 
     return render(request, 'financas/excluir_categoria_orcamento.html', {'categoria': categoria})
+
+@login_required
+def assinatura(request):
+    assinatura_usuario = Assinatura.objects.get(usuario=request.user)
+    return render(request, 'financas/assinatura.html', {'assinatura': assinatura_usuario})

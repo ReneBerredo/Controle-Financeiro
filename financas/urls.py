@@ -28,4 +28,5 @@ urlpatterns = [
     path('categorias-orcamento/nova/', views.criar_categoria_orcamento, name='criar_categoria_orcamento'),
     path('categorias-orcamento/<int:categoria_id>/editar/', views.editar_categoria_orcamento, name='editar_categoria_orcamento'),
     path('categorias-orcamento/<int:categoria_id>/excluir/', views.excluir_categoria_orcamento, name='excluir_categoria_orcamento'),
+    path('assinatura/', views.assinatura, name='assinatura'),
 ]
