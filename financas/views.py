@@ -272,16 +272,28 @@ def garantir_categorias_padrao(usuario):
     if not CategoriaOrcamento.objects.filter(usuario=usuario).exists():
         criar_categorias_padrao(usuario)
 
+def garantir_assinatura(usuario):
+    if not Assinatura.objects.filter(usuario=usuario).exists():
+        criar_assinatura_trial(usuario)
+
 def criar_assinatura_trial(usuario):
-    data_fim = timezone.now().date() + timedelta(days=30)
+    if usuario.is_staff:
+        data_fim = timezone.now().date() + timedelta(days=36500)
+        status = 'ativa'
+    else:
+        data_fim = timezone.now().date() + timedelta(days=30)
+        status = 'trial'
+
     Assinatura.objects.get_or_create(
         usuario=usuario,
-        defaults={'status': 'trial', 'data_fim': data_fim},
+        defaults={'status': status, 'data_fim': data_fim},
     )
-
+    
 @login_required
 def dashboard(request):
     garantir_categorias_padrao(request.user)
+    garantir_assinatura(request.user)
+    
     receitas = Receita.objects.filter(usuario=request.user)
     despesas = Despesa.objects.filter(usuario=request.user)
 
