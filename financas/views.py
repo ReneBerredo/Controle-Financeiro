@@ -18,6 +18,7 @@ from django.db.models import Q
 from django.contrib.auth import login
 from django.utils import timezone
 from .models import Assinatura
+from django.urls import reverse
 
 @login_required
 def lista_receitas(request):
@@ -421,7 +422,13 @@ def alternar_pago_despesa(request, despesa_id):
     despesa = get_object_or_404(Despesa, id=despesa_id, usuario=request.user)
     despesa.pago = not despesa.pago
     despesa.save()
-    return redirect('lista_despesas')
+
+    query_string = request.POST.get('query_string', '')
+    url = reverse('lista_despesas')
+    if query_string:
+        url = f'{url}?{query_string}'
+
+    return redirect(url)
 
 @login_required
 def criar_tipo_receita(request):

@@ -70,6 +70,7 @@
             <div class="item-acoes">
                 <form method="post" action="{% url 'alternar_pago_despesa' despesa.id %}">
                     {% csrf_token %}
+                    <input type="hidden" name="query_string" value="{{ request.GET.urlencode }}">
                     <button type="submit" class="btn-secundario">
                         {% if despesa.pago %}Desfazer{% else %}Marcar pago{% endif %}
                     </button>
