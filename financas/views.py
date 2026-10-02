@@ -10,6 +10,8 @@ from .forms_auth import CadastroForm
 from django.shortcuts import get_object_or_404
 import uuid
 import json
+import mercadopago
+from django.conf import settings
 from dateutil.relativedelta import relativedelta
 from django.db.models.functions import TruncMonth
 from collections import defaultdict
@@ -19,6 +21,7 @@ from django.contrib.auth import login
 from django.utils import timezone
 from .models import Assinatura
 from django.urls import reverse
+
 
 @login_required
 def lista_receitas(request):
@@ -543,3 +546,36 @@ def excluir_categoria_orcamento(request, categoria_id):
 def assinatura(request):
     assinatura_usuario = Assinatura.objects.get(usuario=request.user)
     return render(request, 'financas/assinatura.html', {'assinatura': assinatura_usuario})
+
+@login_required
+def criar_pagamento(request):
+    sdk = mercadopago.SDK(settings.MERCADOPAGO_ACCESS_TOKEN)
+
+    preference_data = {
+        "items": [
+            {
+                "title": "Assinatura Visão Financeira - 30 dias",
+                "quantity": 1,
+                "unit_price": 29.90,
+                "currency_id": "BRL",
+            }
+        ],
+        "back_urls": {
+            "success": request.build_absolute_uri('/financas/pagamento/sucesso/'),
+            "failure": request.build_absolute_uri('/financas/pagamento/falha/'),
+        },
+        "external_reference": str(request.user.id),
+    }
+
+    preference_response = sdk.preference().create(preference_data)
+    preference = preference_response["response"]
+
+    return redirect(preference["init_point"])
+
+@login_required
+def pagamento_sucesso(request):
+    return render(request, 'financas/pagamento_sucesso.html')
+
+@login_required
+def pagamento_falha(request):
+    return render(request, 'financas/pagamento_falha.html')

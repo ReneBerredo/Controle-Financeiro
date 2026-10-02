@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block title %}Pagamento Não Concluído{% endblock %}
+
+{% block conteudo %}
+    <h1>Pagamento não concluído</h1>
+    <p>Houve um problema ao processar seu pagamento. Você pode tentar novamente.</p>
+    <p><a href="{% url 'assinatura' %}">Voltar para Assinatura</a></p>
+{% endblock %}

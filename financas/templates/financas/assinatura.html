@@ -20,5 +20,5 @@
         <p>Sua assinatura está ativa até {{ assinatura.data_fim|date:"d/m/Y" }}.</p>
     {% endif %}
 
-    <p><em>Em breve: opções de planos e pagamento.</em></p>
+    <p><a href="{% url 'criar_pagamento' %}" class="landing-cta">Assinar agora - R$ 29,90</a></p>
 {% endblock %}

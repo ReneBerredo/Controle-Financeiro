@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block title %}Pagamento Aprovado{% endblock %}
+
+{% block conteudo %}
+    <h1>Pagamento recebido!</h1>
+    <p>Estamos confirmando seu pagamento. Em instantes, sua assinatura será ativada automaticamente.</p>
+    <p><a href="{% url 'dashboard' %}">Ir para o Dashboard</a></p>
+{% endblock %}

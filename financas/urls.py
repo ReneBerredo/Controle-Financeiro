@@ -29,4 +29,7 @@ urlpatterns = [
     path('categorias-orcamento/<int:categoria_id>/editar/', views.editar_categoria_orcamento, name='editar_categoria_orcamento'),
     path('categorias-orcamento/<int:categoria_id>/excluir/', views.excluir_categoria_orcamento, name='excluir_categoria_orcamento'),
     path('assinatura/', views.assinatura, name='assinatura'),
+    path('pagamento/criar/', views.criar_pagamento, name='criar_pagamento'),
+    path('pagamento/sucesso/', views.pagamento_sucesso, name='pagamento_sucesso'),
+    path('pagamento/falha/', views.pagamento_falha, name='pagamento_falha'),
 ]
