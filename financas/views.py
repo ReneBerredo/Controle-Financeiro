@@ -21,6 +21,8 @@ from django.contrib.auth import login
 from django.utils import timezone
 from .models import Assinatura
 from django.urls import reverse
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 
 
 @login_required
@@ -565,6 +567,7 @@ def criar_pagamento(request):
             "failure": request.build_absolute_uri('/financas/pagamento/falha/'),
         },
         "external_reference": str(request.user.id),
+        "notification_url": request.build_absolute_uri('/financas/webhook/mercadopago/'),
     }
 
     preference_response = sdk.preference().create(preference_data)
@@ -579,3 +582,26 @@ def pagamento_sucesso(request):
 @login_required
 def pagamento_falha(request):
     return render(request, 'financas/pagamento_falha.html')
+
+@csrf_exempt
+def webhook_mercadopago(request):
+    if request.method == 'POST':
+        dados = json.loads(request.body)
+
+        if dados.get('type') == 'payment':
+            payment_id = dados['data']['id']
+
+            sdk = mercadopago.SDK(settings.MERCADOPAGO_ACCESS_TOKEN)
+            payment_info = sdk.payment().get(payment_id)
+            payment = payment_info['response']
+
+            if payment['status'] == 'approved':
+                usuario_id = payment['external_reference']
+                usuario = User.objects.get(id=usuario_id)
+
+                assinatura = Assinatura.objects.get(usuario=usuario)
+                assinatura.status = 'ativa'
+                assinatura.data_fim = timezone.now().date() + timedelta(days=30)
+                assinatura.save()
+
+    return HttpResponse(status=200)

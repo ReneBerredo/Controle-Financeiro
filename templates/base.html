@@ -20,6 +20,7 @@
         <a href="{% url 'lista_receitas' %}" class="{% if request.resolver_match.url_name == 'lista_receitas' %}nav-ativo{% endif %}">Receitas</a>
         <a href="{% url 'lista_despesas' %}" class="{% if request.resolver_match.url_name == 'lista_despesas' %}nav-ativo{% endif %}">Despesas</a>
         <a href="{% url 'lista_categorias_orcamento' %}" class="{% if request.resolver_match.url_name == 'lista_categorias_orcamento' %}nav-ativo{% endif %}">Minha Regra</a>
+        <a href="{% url 'assinatura' %}" class="{% if request.resolver_match.url_name == 'assinatura' %}nav-ativo{% endif %}">Minha Assinatura</a>
         <button id="botao-tema" type="button">🌙 Modo Escuro</button>
         <form method="post" action="{% url 'logout' %}" style="display: inline;">
             {% csrf_token %}

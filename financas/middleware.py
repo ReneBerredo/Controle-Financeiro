@@ -22,6 +22,10 @@ class ControleAssinaturaMiddleware:
                 caminhos_permitidos = [
                     reverse('assinatura'),
                     reverse('logout'),
+                    reverse('criar_pagamento'),
+                    reverse('pagamento_sucesso'),
+                    reverse('pagamento_falha'),
+                    reverse('webhook_mercadopago'),
                 ]
 
                 if assinatura.status == 'expirada' and request.path not in caminhos_permitidos:
