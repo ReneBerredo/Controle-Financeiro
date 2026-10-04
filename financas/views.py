@@ -553,6 +553,12 @@ def assinatura(request):
 def criar_pagamento(request):
     sdk = mercadopago.SDK(settings.MERCADOPAGO_ACCESS_TOKEN)
 
+    url_sucesso = request.build_absolute_uri('/financas/pagamento/sucesso/')
+    url_falha = request.build_absolute_uri('/financas/pagamento/falha/')
+    url_webhook = request.build_absolute_uri('/financas/webhook/mercadopago/')
+
+    eh_local = 'localhost' in url_sucesso or '127.0.0.1' in url_sucesso
+
     preference_data = {
         "items": [
             {
@@ -563,12 +569,15 @@ def criar_pagamento(request):
             }
         ],
         "back_urls": {
-            "success": request.build_absolute_uri('/financas/pagamento/sucesso/'),
-            "failure": request.build_absolute_uri('/financas/pagamento/falha/'),
+            "success": url_sucesso,
+            "failure": url_falha,
         },
         "external_reference": str(request.user.id),
-        "notification_url": request.build_absolute_uri('/financas/webhook/mercadopago/'),
     }
+
+    if not eh_local:
+        preference_data["auto_return"] = "approved"
+        preference_data["notification_url"] = url_webhook
 
     preference_response = sdk.preference().create(preference_data)
     preference = preference_response["response"]
