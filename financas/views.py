@@ -564,7 +564,7 @@ def criar_pagamento(request):
             {
                 "title": "Assinatura Visão Financeira - 30 dias",
                 "quantity": 1,
-                "unit_price": 29.90,
+                "unit_price": 9.90,
                 "currency_id": "BRL",
             }
         ],

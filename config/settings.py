@@ -29,7 +29,15 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1,localhost').split(',')
 
-CSRF_TRUSTED_ORIGINS = ['https://clarify-compactor-parachute.ngrok-free.dev']
+CSRF_TRUSTED_ORIGINS = [
+    origem for origem in config('CSRF_TRUSTED_ORIGINS', default='').split(',') if origem
+]
+
+if not DEBUG:
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
 
 # Application definition
 
