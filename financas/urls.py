@@ -33,4 +33,5 @@ urlpatterns = [
     path('pagamento/sucesso/', views.pagamento_sucesso, name='pagamento_sucesso'),
     path('pagamento/falha/', views.pagamento_falha, name='pagamento_falha'),
     path('webhook/mercadopago/', views.webhook_mercadopago, name='webhook_mercadopago'),
+    path('teste-email/', views.teste_email, name='teste_email'),
 ]
