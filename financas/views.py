@@ -2,7 +2,6 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.db.models import Sum
 from django.contrib.auth.decorators import login_required
-from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.models import User
 from django.contrib import messages
 from .models import Receita, Despesa, TipoReceita, TipoDespesa, CategoriaOrcamento
@@ -24,7 +23,6 @@ from .models import Assinatura
 from django.urls import reverse
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.core.mail import send_mail
 
 
 @login_required
@@ -616,19 +614,3 @@ def webhook_mercadopago(request):
                 assinatura.save()
 
     return HttpResponse(status=200)
-
-@staff_member_required
-def teste_email(request):
-    destino = request.GET.get('para', request.user.email)
-    try:
-        enviados = send_mail(
-            'Teste Visão Financeira',
-            'Se você recebeu esta mensagem, o envio funciona.',
-            None,
-            [destino],
-            fail_silently=False,
-        )
-        resultado = f'send_mail retornou {enviados} (destino: {destino})'
-    except Exception as erro:
-        resultado = f'ERRO: {type(erro).__name__}: {erro}'
-    return HttpResponse(resultado)
