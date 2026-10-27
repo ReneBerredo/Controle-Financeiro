@@ -4,7 +4,7 @@ from django.db.models import Sum
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
-from .models import Receita, Despesa, TipoReceita, TipoDespesa, CategoriaOrcamento
+from .models import Receita, Despesa, TipoReceita, TipoDespesa, CategoriaOrcamento, Assinatura, PagamentoProcessado
 from .forms import ReceitaForm, DespesaForm, TipoReceitaForm, TipoDespesaForm, CategoriaOrcamentoForm
 from .forms_auth import CadastroForm
 from django.shortcuts import get_object_or_404
@@ -23,6 +23,7 @@ from .models import Assinatura
 from django.urls import reverse
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.db import transaction
 
 
 @login_required
@@ -294,6 +295,23 @@ def criar_assinatura_trial(usuario):
         usuario=usuario,
         defaults={'status': status, 'data_fim': data_fim},
     )
+
+def ativar_assinatura(usuario, payment_id, valor=None):
+    with transaction.atomic():
+        pagamento, criado = PagamentoProcessado.objects.get_or_create(
+            payment_id=str(payment_id),
+            defaults={'usuario': usuario, 'valor': valor},
+        )
+        if not criado:
+            return False
+
+        assinatura = Assinatura.objects.get(usuario=usuario)
+        hoje = timezone.now().date()
+        base = max(assinatura.data_fim, hoje)
+        assinatura.data_fim = base + timedelta(days=30)
+        assinatura.status = 'ativa'
+        assinatura.save()
+        return True
 
 @login_required
 def dashboard(request):
@@ -605,12 +623,7 @@ def webhook_mercadopago(request):
             payment = payment_info['response']
 
             if payment['status'] == 'approved':
-                usuario_id = payment['external_reference']
-                usuario = User.objects.get(id=usuario_id)
-
-                assinatura = Assinatura.objects.get(usuario=usuario)
-                assinatura.status = 'ativa'
-                assinatura.data_fim = timezone.now().date() + timedelta(days=30)
-                assinatura.save()
+                usuario = User.objects.get(id=payment['external_reference'])
+                ativar_assinatura(usuario, payment_id, payment.get('transaction_amount'))
 
     return HttpResponse(status=200)

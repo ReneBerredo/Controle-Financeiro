@@ -1,10 +1,11 @@
 from django.contrib import admin
-from .models import TipoReceita, TipoDespesa, Receita, Despesa, CategoriaOrcamento, Assinatura
+from .models import TipoReceita, TipoDespesa, Receita, Despesa, CategoriaOrcamento, Assinatura, PagamentoProcessado
 
 admin.site.register(TipoReceita)
 admin.site.register(TipoDespesa)
 admin.site.register(CategoriaOrcamento)
 admin.site.register(Assinatura)
+admin.site.register(PagamentoProcessado)
 
 @admin.register(Receita)
 class ReceitaAdmin(admin.ModelAdmin):
